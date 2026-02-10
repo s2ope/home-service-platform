@@ -4,7 +4,7 @@ if(!isset($_SESSION["provider_utype"]) || $_SESSION["provider_utype"] != "Provid
     exit();
 }
 
-$con = mysqli_connect("localhost", "root", "", "gharsewa");
+$con = mysqli_connect("localhost", "root", "", "homeservice");
 if (mysqli_connect_errno()) {
     echo mysqli_connect_error();
     exit();
@@ -226,7 +226,7 @@ $empty_stars = 5 - $full_stars - ($has_half_star ? 1 : 0);
 
 <!-- Footer -->
 <footer id="footer">
-    <p class="copyright">&copy; GharSewa. All rights reserved. Design By: <a href="mailto:manishc021338@nec.edu.np">Manish Chapagain,</a>
+    <p class="copyright">&copy; homeservice. All rights reserved. Design By: <a href="mailto:manishc021338@nec.edu.np">Manish Chapagain,</a>
     <a href="mailto:luthanc021336@nec.edu.np">Luthan Hang Chongbang,</a>
     <a href="mailto:manjilb021340@nec.edu.np">Manjil Bhandari,</a>.</p>
 </footer>

@@ -46,7 +46,7 @@
 
 <!-- Footer -->
 <footer id="footer">
-	<p class="copyright">&copy; GharSewa. All rights reserved. 
+	<p class="copyright">&copy; homeservice. All rights reserved. 
 	<a href="mailto:shoujanyashakya57@pmc.edu.np">shoujanyashakya,</a>
 	<a href="mailto:sandeshkandel52@pmc.edu.np">sandeshkandel,</a>.</p>
 </footer>

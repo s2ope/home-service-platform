@@ -63,7 +63,7 @@ if ($con) {
 
 <!-- Footer -->
 <footer id="footer">
-    <p class="copyright">&copy; GharSewa. All rights reserved. 
+    <p class="copyright">&copy; homeservice. All rights reserved. 
     </p>
 </footer>
 

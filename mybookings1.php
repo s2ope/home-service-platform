@@ -11,7 +11,7 @@ if (!isset($_SESSION["consumer_utype"])) {
     exit();
 }
 
-$con = mysqli_connect("localhost", "root", "", "gharsewa");
+$con = mysqli_connect("localhost", "root", "", "homeservice");
 if (mysqli_connect_errno() > 0) {
     echo mysqli_connect_error();
     exit();
@@ -763,7 +763,7 @@ $stmt->bind_result($fname, $mname, $lname,$photo,$average_rating, $srid, $addres
         <div id="main">
             <div class="inner">
                 <header id="header">
-                    <a href="welcome.php" class="logo"><strong><i class="fas fa-home"></i> GharSewa</strong></a>
+                    <a href="welcome.php" class="logo"><strong><i class="fas fa-home"></i> homeservice</strong></a>
                 </header>
 
                 <h2 id="elements"><i class="fas fa-calendar-check"></i> Active Bookings</h2>
@@ -937,7 +937,7 @@ $stmt->bind_result($fname, $mname, $lname,$photo,$average_rating, $srid, $addres
                                                 <script>
                                                     document.addEventListener('DOMContentLoaded', function() {
                                                         const form = document.getElementById('esewaForm<?= $srid ?>');
-                                                        const transactionUuid = 'gharsewa_<?= $srid ?>_' + Date.now();
+                                                        const transactionUuid = 'homeservice_<?= $srid ?>_' + Date.now();
                                                         document.getElementById('transaction_uuid_<?= $srid ?>').value = transactionUuid;
                                                         
                                                         const totalAmount = '<?= $charge ?>';

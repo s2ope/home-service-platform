@@ -8,7 +8,7 @@ if (!isset($_SESSION["utype"]) || $_SESSION["utype"] != "Admin") {
 }
 
 // Database connection
-$con = mysqli_connect("localhost", "root", "", "gharsewa");
+$con = mysqli_connect("localhost", "root", "", "homeservice");
 if (mysqli_connect_errno()) {
     echo mysqli_connect_error();
     exit();

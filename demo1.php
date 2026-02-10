@@ -5,7 +5,7 @@ if (!isset($_SESSION["consumer_utype"])) {
     exit();
 }
 
-$con = mysqli_connect("localhost", "root", "", "gharsewa");
+$con = mysqli_connect("localhost", "root", "", "homeservice");
 if (mysqli_connect_errno() > 0) {
     echo mysqli_connect_error();
     exit();
@@ -582,7 +582,7 @@ $stmt->bind_result($fname, $mname, $lname, $srid, $address, $city, $state, $coun
         <div id="main">
             <div class="inner">
                 <header id="header">
-                    <a href="welcome.php" class="logo"><strong>GharSewa</strong></a>
+                    <a href="welcome.php" class="logo"><strong>homeservice</strong></a>
                 </header>
 
                 <h2 id="elements">Active Bookings</h2>
@@ -726,7 +726,7 @@ $stmt->bind_result($fname, $mname, $lname, $srid, $address, $city, $state, $coun
                                                 <script>
                                                     document.addEventListener('DOMContentLoaded', function() {
                                                         const form = document.getElementById('esewaForm<?= $srid ?>');
-                                                        const transactionUuid = 'gharsewa_<?= $srid ?>_' + Date.now();
+                                                        const transactionUuid = 'homeservice_<?= $srid ?>_' + Date.now();
                                                         document.getElementById('transaction_uuid_<?= $srid ?>').value = transactionUuid;
                                                         
                                                         const totalAmount = '<?= $charge ?>';
@@ -959,7 +959,7 @@ $stmt->bind_result($fname, $mname, $lname, $srid, $address, $city, $state, $coun
             const esewaForms = document.querySelectorAll('form[id^="esewaForm"]');
             esewaForms.forEach(form => {
                 const srid = form.id.replace('esewaForm', '');
-                const transactionUuid = 'gharsewa_' + srid + '_' + Date.now();
+                const transactionUuid = 'homeservice_' + srid + '_' + Date.now();
                 form.querySelector('input[name="transaction_uuid"]').value = transactionUuid;
                 
                 const totalAmount = form.querySelector('input[name="total_amount"]').value;

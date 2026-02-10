@@ -7,7 +7,7 @@ ini_set('display_errors', 1);
 // Start a generic session to handle messages
 session_start();
 
-$con = mysqli_connect("localhost", "root", "", "gharsewa");
+$con = mysqli_connect("localhost", "root", "", "homeservice");
 if (mysqli_connect_errno()) {
     echo "Connection failed: " . mysqli_connect_error();
     exit();

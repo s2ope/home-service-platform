@@ -38,7 +38,7 @@ header("Pragma: no-cache");
 
             <!-- Header -->
             <header id="header">
-                <a href="welcome.php" class="logo"><strong>GharSewa</strong></a>
+                <a href="welcome.php" class="logo"><strong>homeservice</strong></a>
                 <!-- Sign Out Button -->
                 
             </header>
@@ -53,7 +53,7 @@ header("Pragma: no-cache");
                 $hostname = "localhost";
                 $uname = "root";
                 $pw = "";
-                $db = "gharsewa";
+                $db = "homeservice";
 
                 // Create connection
                 $conn = new mysqli($hostname, $uname, $pw, $db);

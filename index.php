@@ -27,7 +27,7 @@
 
             <?php
             // Database connection
-            $conn = new mysqli("localhost", "root", "", "gharsewa");
+            $conn = new mysqli("localhost", "root", "", "homeservice");
 
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);

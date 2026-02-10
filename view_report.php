@@ -25,7 +25,7 @@ if (!empty($formData)) {
     $filterMessage = '<h3 style="color: green;">Filters applied successfully!</h3>';
 }
 
-$con = mysqli_connect("localhost", "root", "", "gharsewa");
+$con = mysqli_connect("localhost", "root", "", "homeservice");
 if (mysqli_connect_errno() > 0) {
     echo mysqli_connect_error();
     exit();
@@ -377,7 +377,7 @@ $stmt->store_result();
         <div id="main">
             <div class="inner">
                 <header id="header">
-                    <a href="welcome.php" class="logo"><strong>GharSewa</strong></a>
+                    <a href="welcome.php" class="logo"><strong>homeservice</strong></a>
                 </header>
 
                 <h2>My Services</h2>
@@ -656,7 +656,7 @@ if (!empty($formData)) {
     $filterMessage = '<h3 style="color: green;">Filters applied successfully!</h3>';
 }
 
-$con = mysqli_connect("localhost", "root", "", "gharsewa");
+$con = mysqli_connect("localhost", "root", "", "homeservice");
 if (mysqli_connect_errno() > 0) {
     echo mysqli_connect_error();
     exit();
@@ -1008,7 +1008,7 @@ $stmt->store_result();
         <div id="main">
             <div class="inner">
                 <header id="header">
-                    <a href="welcome.php" class="logo"><strong>GharSewa</strong></a>
+                    <a href="welcome.php" class="logo"><strong>homeservice</strong></a>
                 </header>
 
                 <h2>My Services</h2>

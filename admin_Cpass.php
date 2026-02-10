@@ -5,7 +5,7 @@ if (!isset($_SESSION["utype"]) || $_SESSION["utype"] != "Admin") {
     exit();
 }
 
-$con = mysqli_connect("localhost", "root", "", "gharsewa");
+$con = mysqli_connect("localhost", "root", "", "homeservice");
 if (mysqli_connect_errno() > 0) {
     echo mysqli_connect_error();
     exit();
@@ -75,7 +75,7 @@ if (isset($_POST["sbbtn"])) {
 
 							<!-- Header -->
 								<header id="header">
-									<a href="view_arequest.php" class="logo"><strong>GharSewa</strong> </a>
+									<a href="view_arequest.php" class="logo"><strong>homeservice</strong> </a>
 									
 								</header>
 

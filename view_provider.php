@@ -38,7 +38,7 @@ session_start();
                     <div class="features" >
                         <?php
                         // Database connection
-                        $con = mysqli_connect("localhost", "root", "", "gharsewa");
+                        $con = mysqli_connect("localhost", "root", "", "homeservice");
                         if (mysqli_connect_errno()) {
                             echo "Failed to connect to MySQL: " . mysqli_connect_error();
                             exit();

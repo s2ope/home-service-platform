@@ -9,7 +9,7 @@ if (!isset($_SESSION["consumer_utype"]) || $_SESSION["consumer_utype"] != "Consu
     exit();
 }
 
-$con = mysqli_connect("localhost", "root", "", "gharsewa");
+$con = mysqli_connect("localhost", "root", "", "homeservice");
 if (mysqli_connect_errno() > 0) {
     echo mysqli_connect_error();
     exit();
@@ -86,7 +86,7 @@ if (isset($_SESSION['msg'])) {
         <div id="main">
             <div class="inner">
                 <header id="header">
-                    <a href="welcome.php" class="logo"><strong>GharSewa</strong></a>
+                    <a href="welcome.php" class="logo"><strong>homeservice</strong></a>
                 </header>
 
                

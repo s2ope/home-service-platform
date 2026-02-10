@@ -7,7 +7,7 @@ if (!isset($_SESSION["utype"]) || $_SESSION["utype"] != "Admin") {
 }
 
 // Database connection
-$con = mysqli_connect("localhost", "root", "", "gharsewa");
+$con = mysqli_connect("localhost", "root", "", "homeservice");
 if (mysqli_connect_errno()) {
     die("Database connection failed: " . mysqli_connect_error());
 }
@@ -75,7 +75,7 @@ $users = fetchUsers($con, $active_tab);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management | GharSewa</title>
+    <title>User Management | homeservice</title>
     <link rel="stylesheet" href="assets/css/main.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <style>

@@ -12,7 +12,7 @@ if (!isset($_SESSION["utype"]) || $_SESSION["utype"] !== "Admin") {
     exit();
 }
 
-$con = mysqli_connect("localhost", "root", "", "gharsewa");
+$con = mysqli_connect("localhost", "root", "", "homeservice");
 if (mysqli_connect_errno() > 0) {
     echo mysqli_connect_error();
     exit();
@@ -123,7 +123,7 @@ $current_filter = $status_filter;
 <html>
 
 <head>
-    <title>Verification Requests | GharSewa</title>
+    <title>Verification Requests | homeservice</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
