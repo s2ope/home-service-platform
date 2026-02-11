@@ -1,8 +1,13 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+?>
+
+<?php
 session_start();
 if(isset($_POST["sbbtn"]))
 	{
-		$con=mysqli_connect("localhost","root","","ServiceDb");
+		$con=mysqli_connect("localhost","root","","homeservice");
 	if(mysqli_connect_errno()>0)
 	{
 		echo mysqli_connect_error();

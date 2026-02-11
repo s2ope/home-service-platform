@@ -1,9 +1,8 @@
 <?php
+ob_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-?>
 
-<?php
 // Start a generic session to handle messages
 session_start();
 
@@ -37,8 +36,8 @@ if (isset($_POST["sbbtn"])) {
             // Match the provided password with the stored password
             if ($pass == $stored_pass) {
                 // Start admin-specific session
-                session_name('admin_session');
-                session_start();
+                // session_name('admin_session');
+                // session_start();
                 $_SESSION['emailid'] = $emailid;
                 $_SESSION['utype'] = "Admin";
                 $_SESSION['name'] = "Admin";
@@ -79,8 +78,8 @@ if (isset($_POST["sbbtn"])) {
                         $user_stmt->fetch();
 
                         // Start consumer-specific session
-                        session_name('consumer_session');
-                        session_start();
+                        // session_name('consumer_session');
+                        // session_start();
                         $_SESSION['consumer_id'] = $id;
                         $_SESSION["consumer_name"] = $fname . " " . $mname . " " . $lname;
                         $_SESSION["consumer_img"] = $img;
@@ -94,50 +93,56 @@ if (isset($_POST["sbbtn"])) {
                         $_SESSION['login_msg'] = "Consumer data not found...";
                     }
                     $user_stmt->close();
-                } elseif ($user_type == 2) { // Provider
-                    // Provider: Fetch data from the 'provider' table
-                    $user_query = "SELECT pid, fname, mname, lname, photo, phnno FROM provider WHERE email=?";
-                    $user_stmt = $con->prepare($user_query);
-                    $user_stmt->bind_param("s", $emailid);
-                    $user_stmt->execute();
-                    $user_stmt->store_result();
+            } elseif ($user_type == 2) { // Provider
+                // Provider: Fetch data from the 'provider' table
+                $user_query = "SELECT pid, fname, mname, lname, photo, phnno FROM provider WHERE email=?";
+                $user_stmt = $con->prepare($user_query);
+                $user_stmt->bind_param("s", $emailid);
+                $user_stmt->execute();
+                $user_stmt->store_result();
 
-                    if ($user_stmt->num_rows > 0) {
-                        $user_stmt->bind_result($id, $fname, $mname, $lname, $img, $mno);
-                        $user_stmt->fetch();
+                if ($user_stmt->num_rows > 0) {
+    $user_stmt->bind_result($id, $fname, $mname, $lname, $img, $mno);
+    $user_stmt->fetch();
 
-                        // Start provider-specific session
-                        session_name('provider_session');
-                        session_start();
-                        $_SESSION['provider_id'] = $id;
-                        $_SESSION["provider_name"] = $fname . " " . $mname . " " . $lname;
-                        $_SESSION["provider_img"] = $img;
-                        $_SESSION["provider_mno"] = $mno;
-                        $_SESSION["provider_emailid"] = $emailid;
-                        $_SESSION["provider_utype"] = "Provider";
+    $_SESSION['provider_id'] = $id;
+    $_SESSION["provider_name"] = "$fname $mname $lname";
+    $_SESSION["provider_img"] = $img;
+    $_SESSION["provider_mno"] = $mno;
+    $_SESSION["provider_emailid"] = $emailid;
+    $_SESSION["provider_utype"] = "Provider";
 
-                        header("Location: Mservices.php");
-                        exit();
-                    } else {
-                        $_SESSION['login_msg'] = "Provider data not found...";
-                    }
-                    $user_stmt->close();
-                } else {
-                    $_SESSION['login_msg'] = "Unknown user type...";
+    // TEMP DEBUG
+    // echo "SESSION VARS:<br>";
+    // echo "<pre>";
+    // print_r($_SESSION);
+    // echo "</pre>";
+    // exit();
+
+    header("Location: Mservices.php");
+    exit();
+}
+ else {
+                    $_SESSION['login_msg'] = "Provider data not found...";
                 }
+                $user_stmt->close();
             } else {
-                $_SESSION['login_msg'] = "Invalid Email or Password...";
+                $_SESSION['login_msg'] = "Unknown user type...";
             }
         } else {
             $_SESSION['login_msg'] = "Invalid Email or Password...";
         }
-        $stmt->close();
+    } else {
+        $_SESSION['login_msg'] = "Invalid Email or Password...";
     }
+    $stmt->close();
+}
     $con->close();
+    // die("REACHED END OF SCRIPT");
 
     // Redirect to prevent form resubmission
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit();
+    // header("Location: " . $_SERVER['PHP_SELF']);
+    // exit();
 }
 ?>
 
@@ -227,3 +232,8 @@ if (isset($_POST["sbbtn"])) {
 </body>
 
 </html>
+
+<?php
+ob_end_flush();
+?>
+    

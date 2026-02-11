@@ -72,10 +72,15 @@ header("Pragma: no-cache");
                     echo '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">'; // Start grid container
                     while ($row = $result->fetch_assoc()):
                 ?>
-
                 <div style="border: 1px solid #ddd; padding: 10px; text-align: center; border-radius: 5px;">
                     <h3><?php echo $row['sname']; ?></h3>
-                    <img src="<?php echo $row['img']; ?>" width="200px" height="200px" alt="Service Image" />
+                    <img 
+                            src="<?php echo htmlspecialchars($row['icon']); ?>" 
+                            width="200" 
+                            height="200" 
+                            alt="Service Image"
+                            style="object-fit:cover;"
+                        >
                     <p>
                         <a href="view_provider.php?id=<?php echo $row['sid']; ?>" class="button">View All</a>
                     </p>

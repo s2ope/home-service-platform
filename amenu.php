@@ -1,3 +1,8 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+?>
+
 <section id="search" class="alt" style="height:200px;">
     <center>
         <!-- Replace image with Font Awesome user icon -->

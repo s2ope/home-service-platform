@@ -31,7 +31,7 @@
                     $hostname = "localhost";
                     $uname = "root";
                     $pw = "";
-                    $db = "servicedb";
+                    $db = "homeservice";
 
                     // Create connection
                     $conn = new mysqli($hostname, $uname, $pw, $db);
