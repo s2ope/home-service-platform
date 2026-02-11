@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
 session_start();
 
 // Check if the user is a provider
@@ -30,7 +31,7 @@ if (isset($_GET['bill_update']) && $_GET['bill_update'] == "success") {
 }
 
 if (isset($_POST["btn"])) {
-    $con = mysqli_connect("localhost", "root", "", "homeservice");
+    $con = mysqli_connect("localhost", "root", "", "gharsewa");
     if (mysqli_connect_errno()) {
         echo mysqli_connect_error();
         exit();
@@ -102,7 +103,7 @@ if (isset($_POST["btn"])) {
 
 if (isset($_POST['work_done'])) {
     $srid = $_POST['srid'];
-    $con = mysqli_connect("localhost", "root", "", "homeservice");
+    $con = mysqli_connect("localhost", "root", "", "gharsewa");
     if (mysqli_connect_errno()) {
         echo mysqli_connect_error();
         exit();
@@ -127,7 +128,7 @@ if (isset($_POST['work_done'])) {
 
 if (isset($_POST['mark_as_read'])) {
     $srid = $_POST['srid'];
-    $con = mysqli_connect("localhost", "root", "", "homeservice");
+    $con = mysqli_connect("localhost", "root", "", "gharsewa");
     if (mysqli_connect_errno()) {
         echo mysqli_connect_error();
         exit();
@@ -150,7 +151,7 @@ if (isset($_POST['mark_as_read'])) {
 
 if (isset($_POST['paid_cash'])) {
     $srid = $_POST['srid'];
-    $con = mysqli_connect("localhost", "root", "", "homeservice");
+    $con = mysqli_connect("localhost", "root", "", "gharsewa");
     if (mysqli_connect_errno()) {
         echo mysqli_connect_error();
         exit();
@@ -732,39 +733,42 @@ if (isset($_POST['paid_cash'])) {
                         <form name="f1" method="post" action="view_request.php">
                             <div id="requestsContainer">
                             <?php
-                            $con = mysqli_connect("localhost", "root", "", "homeservice");
+                            $con = mysqli_connect("localhost", "root", "", "gharsewa");
                             if (mysqli_connect_errno()) {
                                 echo mysqli_connect_error();
                                 exit();
                             }
 
                             $provider_id = $_SESSION["provider_id"];
-                    $query1 = "
+                            $query1 = "
 SELECT 
-    s.srid,
-    c.fname AS consumer_fname, c.mname AS consumer_mname, c.lname AS consumer_lname,
-    c.address AS consumer_address, c.city AS consumer_city, c.state AS consumer_state, c.country AS consumer_country,
-    c.phnno AS consumer_phone, c.photo AS consumer_photo,
-    p.fname AS provider_fname, p.mname AS provider_mname, p.lname AS provider_lname,
-    p.phnno AS provider_phone, p.photo AS provider_photo,
-    s.req_date, s.req_time,
-    sv.sname AS service_name,
-    s.status, s.work_status, s.payment_status,
-    s.charge, s.read_status,
-    s.last_modified, s.msgp,
-    IFNULL(AVG(r.rating), 0) AS average_rating,
-    r.rating AS customer_rating
-FROM service_request s
-JOIN consumer c ON s.consumer_id = c.cid
-JOIN provider p ON s.provider_id = p.pid
-JOIN services sv ON s.service_id = sv.sid
-LEFT JOIN ratings r ON r.service_id = s.service_id AND r.user_id = s.consumer_id
-WHERE s.provider_id = ?
-GROUP BY s.srid
-ORDER BY s.req_date DESC
+    sr.srid, 
+    c.fname, c.mname, c.lname, 
+    c.address, c.city, c.state, c.country, 
+    sr.req_date, sr.req_time, 
+    s.sname, 
+    sr.status, sr.work_status, sr.payment_status, 
+    sr.charge, sr.read_status, sr.last_modified, sr.msgp,
+    p.average_rating,
+    c.phnno,
+    r.rating AS customer_rating,
+    c.photo
+FROM service_request sr
+JOIN consumer c ON c.cid = sr.consumer_id
+JOIN services s ON s.sid = sr.service_id
+JOIN provider p ON p.pid = sr.provider_id
+LEFT JOIN ratings r ON r.service_id = sr.service_id   -- ✅ FIXED
+WHERE sr.provider_id = ?
+AND sr.status IN (0, 1)
+AND (
+    sr.payment_status = 0
+    OR (
+        sr.payment_status = 1
+        AND sr.read_status = 0
+    )
+)
+ORDER BY sr.last_modified DESC
 ";
-
-
 
                             
                             $stmt1 = $con->prepare($query1);
