@@ -34,7 +34,7 @@ if (isset($_POST["sbbtn"])) {
             $stmt->fetch();
 
             // Match the provided password with the stored password
-            if ($pass == $stored_pass) {
+            if (password_verify($pass, $stored_pass)) {
                 // Start admin-specific session
                 // session_name('admin_session');
                 // session_start();
@@ -64,7 +64,7 @@ if (isset($_POST["sbbtn"])) {
             $stmt->bind_result($user_type, $stored_pass);
             $stmt->fetch();
 
-            if ($pass == $stored_pass) {
+            if (password_verify($pass, $stored_pass)) {
                 if ($user_type == 1) { // Consumer
                     // Consumer: Fetch data from the 'consumer' table
                     $user_query = "SELECT cid, fname, mname, lname, photo, phnno FROM consumer WHERE email=?";

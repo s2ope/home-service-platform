@@ -913,25 +913,30 @@ ORDER BY sr.last_modified DESC
                                         <?php endif; ?>
                                         
                                         <div class="action-buttons">
-                                            <?php if ($status == 1 && $work_status == 0): ?>
-                                                <form method="post" action="view_request.php" class="action-form">
-                                                
-                                                    <input type="hidden" name="srid" value="<?= $srid ?>">
-                                                    <input type="submit" name="work_done" value="Work Done" class="btn btn-pay">
-                                                </form>
-                                            <?php elseif ($work_status == 1 && $payment_status == 0 && empty($charge)): ?>
-                                                <a href="update_bill.php?srid=<?= $srid ?>" class="btn btn-pay primary" style="display: inline-flex; align-items: center; justify-content: center;">
-                                                    <i class="fas fa-file-invoice-dollar"  style="margin-right:3px;"></i> Update Bill
-                                                </a>
-                                                <?php elseif ($work_status == 1 && $payment_status == 0 && !empty($charge)): ?>
-                                                <form method="post" action="view_request.php" class="action-form">
-                                                    <input type="hidden" name="srid" value="<?= $srid ?>">
-                                                    <button type="submit" name="paid_cash" class="btn btn-cash button primary" style="display: inline-flex; align-items: center; justify-content: center;">
-                                                        <i class="fas fa-money-bill-wave" style="margin-right:3px;"></i> Paid in Cash
-                                                    </button>
-                                                </form>
-                                            <?php endif; ?>
-                                        </div>
+    <?php if ($status == 1 && $work_status == 0): ?>
+        <!-- Work not done yet -->
+        <form method="post" action="view_request.php" class="action-form">
+            <input type="hidden" name="srid" value="<?= $srid ?>">
+            <input type="submit" name="work_done" value="Work Done" class="btn btn-pay">
+        </form>
+
+    <?php elseif ($work_status == 1 && $payment_status == 0 && ($charge === null || $charge == 0)): ?>
+        <!-- Work done, bill not updated yet -->
+        <a href="update_bill.php?srid=<?= $srid ?>" class="btn btn-pay primary" style="display: inline-flex; align-items: center; justify-content: center;">
+            <i class="fas fa-file-invoice-dollar" style="margin-right:3px;"></i> Update Bill
+        </a>
+
+    <?php elseif ($work_status == 1 && $payment_status == 0 && !empty($charge)): ?>
+        <!-- Work done, bill updated, payment pending -->
+        <form method="post" action="view_request.php" class="action-form">
+            <input type="hidden" name="srid" value="<?= $srid ?>">
+            <button type="submit" name="paid_cash" class="btn btn-cash button primary" style="display: inline-flex; align-items: center; justify-content: center;">
+                <i class="fas fa-money-bill-wave" style="margin-right:3px;"></i> Paid in Cash
+            </button>
+        </form>
+    <?php endif; ?>
+</div>
+
                                     </div>
                                     <?php
                                 }

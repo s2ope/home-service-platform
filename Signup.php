@@ -90,27 +90,28 @@ if (isset($_POST["sbbtn"])) {
             else {
                 $nimgname = $mno . "." . $imgtype;
                 if (move_uploaded_file($img, "uploads/" . $nimgname)) {
-                    $entered_pass = $pass;
+                    $hashed_pass = password_hash($pass, PASSWORD_DEFAULT);
+
 
                     if ($utype == "Consumer") {
                         $user = 1;
                         $query1 = "INSERT INTO consumer (fname, mname, lname, Gender, dob, phnno, country, state, city, address, photo, email, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                         $stmt1 = $con->prepare($query1);
-                        $stmt1->bind_param("sssssssssssss", $fname, $mname, $lname, $gender, $bdate, $mno, $country, $state, $city, $address, $nimgname, $emailid, $entered_pass);
+                        $stmt1->bind_param("sssssssssssss", $fname, $mname, $lname, $gender, $bdate, $mno, $country, $state, $city, $address, $nimgname, $emailid, $hashed_pass);
                         $stmt1->execute();
                         $stmt1->store_result();
                     } else {
                         $user = 2;
                         $query2 = "INSERT INTO provider (fname, mname, lname, Gender, dob, phnno, country, state, city, address, photo, email, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                         $stmt2 = $con->prepare($query2);
-                        $stmt2->bind_param("sssssssssssss", $fname, $mname, $lname, $gender, $bdate, $mno, $country, $state, $city, $address, $nimgname, $emailid, $entered_pass);
+                        $stmt2->bind_param("sssssssssssss", $fname, $mname, $lname, $gender, $bdate, $mno, $country, $state, $city, $address, $nimgname, $emailid, $hashed_pass);
                         $stmt2->execute();
                         $stmt2->store_result();
                     }
 
                     $query = "INSERT INTO users (email, password, user_type) values (?, ?, ?)";
                     $stmt = $con->prepare($query);
-                    $stmt->bind_param("sss", $emailid, $entered_pass, $user);
+                    $stmt->bind_param("sss", $emailid, $hashed_pass, $user);
                     $stmt->execute();
                     $stmt->store_result();
 
