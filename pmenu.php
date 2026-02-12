@@ -175,18 +175,62 @@ $empty_stars = 5 - $full_stars - ($has_half_star ? 1 : 0);
 </section>
 
 <!-- ==================== MENU ==================== -->
-<nav>
+<nav id="menu">
+    <header class="major">
+	<h2>Menu</h2>
+</header>
     <ul>
         <li><a href="Mservices.php">Verify Services <?php if($unread_verification_count>0) echo '<span class="unread-badge">'.$unread_verification_count.'</span>'; ?></a></li>
         <li><a href="view_request.php">Active Requests <?php if($unread_service_count>0) echo '<span class="unread-badge">'.$unread_service_count.'</span>'; ?></a></li>
         <li><a href="View_report.php">Request History</a></li>
+        <li><a href="update_bill.php">Update Bill</a></li>
         <li><a href="Provider_Cpass.php">My Account</a></li>
         <li><a href="contactusp.php">Contact Us</a></li>
         <li><a href="Signout.php">Signout</a></li>
     </ul>
 </nav>
+<!-- Section -->
+<section>
+    <header>
+        <h2>Get in touch</h2>
+    </header>
+    <ul class="contact">
+                                                <li class="icon solid fa-envelope"><a href="mailto:shoujanyashakya57@pmc.edu.np">shoujanyashakya57@pmc.edu.np</a></li>
+												<li class="icon solid fa-phone">+977 9820000000</li>
+												<li class="icon solid fa-envelope"><a href="mailto:sandeshkandel52@pmc.edu.np">sandeshkandel52@pmc.edu.np</a></li>
+												<li class="icon solid fa-phone">+977 9801000000</li>
+												<li class="icon solid fa-home">PMC,<br />Patandhoka,<br />Lalitpur</li>
+    </ul>
+</section>
 
+<!-- Footer -->
+<footer id="footer">
+    <p class="copyright">&copy; homeservice. All rights reserved. 
+	<a href="mailto:shoujanyashakya57@pmc.edu.np">shoujanyashakya,</a>
+	<a href="mailto:sandeshkandel52@pmc.edu.np">sandeshkandel,</a>.</p>
+</footer>
+
+<style>
+    .unread-badge {
+        display: inline-block;
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        line-height: 20px;
+        font-size: 12px;
+        margin-left: 5px;
+        animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+</style>
 </body>
 </html>
 
-<?php $con->close(); ?>

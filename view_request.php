@@ -31,7 +31,7 @@ if (isset($_GET['bill_update']) && $_GET['bill_update'] == "success") {
 }
 
 if (isset($_POST["btn"])) {
-    $con = mysqli_connect("localhost", "root", "", "gharsewa");
+    $con = mysqli_connect("localhost", "root", "", "homeservice");
     if (mysqli_connect_errno()) {
         echo mysqli_connect_error();
         exit();
@@ -103,7 +103,7 @@ if (isset($_POST["btn"])) {
 
 if (isset($_POST['work_done'])) {
     $srid = $_POST['srid'];
-    $con = mysqli_connect("localhost", "root", "", "gharsewa");
+    $con = mysqli_connect("localhost", "root", "", "homeservice");
     if (mysqli_connect_errno()) {
         echo mysqli_connect_error();
         exit();
@@ -128,7 +128,7 @@ if (isset($_POST['work_done'])) {
 
 if (isset($_POST['mark_as_read'])) {
     $srid = $_POST['srid'];
-    $con = mysqli_connect("localhost", "root", "", "gharsewa");
+    $con = mysqli_connect("localhost", "root", "", "homeservice");
     if (mysqli_connect_errno()) {
         echo mysqli_connect_error();
         exit();
@@ -151,7 +151,7 @@ if (isset($_POST['mark_as_read'])) {
 
 if (isset($_POST['paid_cash'])) {
     $srid = $_POST['srid'];
-    $con = mysqli_connect("localhost", "root", "", "gharsewa");
+    $con = mysqli_connect("localhost", "root", "", "homeservice");
     if (mysqli_connect_errno()) {
         echo mysqli_connect_error();
         exit();
@@ -165,6 +165,8 @@ if (isset($_POST['paid_cash'])) {
     $stmt->bind_result($charge);
     $stmt->fetch();
     $stmt->close();
+// var_dump($srid);
+// exit;
 
     if ($charge > 0) {
         // Calculate 10% of charge for wallet deduction
@@ -195,7 +197,7 @@ if (isset($_POST['paid_cash'])) {
         $_SESSION['flash_type'] = "error";
     }
     
-    $stmt->close();
+    // $stmt->close();
     $con->close();
     
     header("Location: view_request.php");
@@ -733,7 +735,7 @@ if (isset($_POST['paid_cash'])) {
                         <form name="f1" method="post" action="view_request.php">
                             <div id="requestsContainer">
                             <?php
-                            $con = mysqli_connect("localhost", "root", "", "gharsewa");
+                            $con = mysqli_connect("localhost", "root", "", "homeservice");
                             if (mysqli_connect_errno()) {
                                 echo mysqli_connect_error();
                                 exit();

@@ -1,9 +1,6 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-?>
-
-<?php
 // session_name('consumer_session');
 session_start();
 if (!isset($_SESSION["consumer_utype"])) {
@@ -1177,7 +1174,7 @@ $stmt->bind_result($fname, $mname, $lname,$photo,$average_rating, $srid, $addres
 </body>
 </html>
 
-<?php
+<!-- <?php
 $stmt->close();
 $con->close();
-?>
+?> -->

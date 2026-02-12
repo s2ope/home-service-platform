@@ -674,7 +674,7 @@ $stmt->store_result();
 </body>
 </html>
 
-<?php
+<!-- <?php
 $stmt->close();
 $con->close();
-?>
+?> -->

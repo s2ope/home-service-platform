@@ -1,10 +1,6 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-?>
-
-<?php
-
 $con = mysqli_connect("localhost", "root", "", "homeservice");
 
 if (mysqli_connect_errno() > 0) {
@@ -34,11 +30,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     // Insert the rating
-    $insert_query = "INSERT INTO ratings (request_id, provider_id, consumer_id, rating)
-                    VALUES (?, ?, ?, ?)";
-    $stmt = $con->prepare($insert_query);
-    $stmt->bind_param("iiii", $srid, $provider_id, $consumer_id, $rating);
-    
+// Insert the rating
+$insert_query = "INSERT INTO ratings 
+    (user_id, service_id, rating, comment, request_id, provider_id, consumer_id) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)";
+$stmt = $con->prepare($insert_query);
+
+// === ADD THIS BEFORE bind_param ===
+$service_id = $_POST['service_id'] ?? null;
+$request_id = $_POST['request_id'] ?? null;
+$provider_id = $_POST['provider_id'] ?? null;
+$comment = $_POST['comment'] ?? '';
+$rating_value = $rating; // your validated rating
+$user_id = 0; // based on your table default
+
+// Validate required fields
+// if (!$service_id || !$request_id || !$provider_id) {
+//     $_SESSION['rating_msg'] = "Required data missing!";
+//     $_SESSION['rating_msg_color'] = 'red';
+//     header("Location: " . $_SERVER['HTTP_REFERER']);
+//     exit();
+// }
+
+// Bind parameters for insert
+$stmt->bind_param("iiisiii", $user_id, $service_id, $rating_value, $comment, $request_id, $provider_id, $consumer_id);
+
+// $stmt->execute();
+
     if ($stmt->execute()) {
         // Update provider's average rating and count
         $update_query = "UPDATE provider SET

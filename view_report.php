@@ -631,11 +631,9 @@ $stmt->store_result();
 </html>
 
 <?php
-$stmt->close();
-
-?>
-<?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 if (!isset($_SESSION["provider_utype"]) || $_SESSION["provider_utype"] != "Provider") {
     header("Location: Signin.php");
     exit();
@@ -1261,7 +1259,7 @@ $stmt->store_result();
 </body>
 </html>
 
-<?php
+<!-- <?php
 $stmt->close();
 
-?>
+?> -->
