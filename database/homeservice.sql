@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 11, 2026 at 04:52 AM
+-- Generation Time: Feb 12, 2026 at 05:53 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -50,7 +50,8 @@ CREATE TABLE `consumer` (
 --
 
 INSERT INTO `consumer` (`cid`, `fname`, `mname`, `lname`, `dob`, `gender`, `country`, `state`, `city`, `address`, `phnno`, `email`, `password`, `photo`, `created_at`) VALUES
-(4, 'User', NULL, 'Bhai', '2010-01-05', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'good', '9800000066', 'userbhai@gmail.com', '11112222', 'consumer_4_1770777727.png', '2026-01-08 14:43:16');
+(4, 'User', NULL, 'Bhai', '2010-01-05', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'good', '9800000066', 'userbhai@gmail.com', '12341234', 'consumer_4_1770777727.png', '2026-01-08 14:43:16'),
+(5, 'test1', NULL, 'test1', '2010-02-05', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'ff', '9800000055', 'test1@test.com', '$2y$10$J1QraZTfXeLefWlPbpBjPuhjfxZsEhAQb97p4xc9etG0ztkrrSA9K', '9800000055.png', '2026-02-12 04:46:31');
 
 -- --------------------------------------------------------
 
@@ -99,17 +100,18 @@ CREATE TABLE `provider` (
   `average_rating` decimal(2,1) DEFAULT 0.0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `password` varchar(255) NOT NULL,
-  `wallet` decimal(10,2) NOT NULL DEFAULT 0.00
+  `wallet` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `rating_count` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `provider`
 --
 
-INSERT INTO `provider` (`pid`, `fname`, `mname`, `lname`, `dob`, `gender`, `country`, `state`, `city`, `address`, `phnno`, `email`, `photo`, `average_rating`, `created_at`, `password`, `wallet`) VALUES
-(5, 'Admin', NULL, 'Bhai', '2010-02-03', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'k', '9800000555', 'admin@gmail.com', '9800000555.png', 0.0, '2026-02-07 08:08:07', '11112222', 0.00),
-(6, 'Provider', NULL, 'Bhai', '2010-02-01', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'hlo', '9800002222', 'providerbhai@gmail.com', 'provider_6_1770774821.png', 0.0, '2026-02-07 08:36:47', '11112222', 0.00),
-(7, 'Provider', NULL, 'Dai', '2010-02-10', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'hio', '9800000111', 'providerdai@gmail.com', '9800000111.png', 0.0, '2026-02-11 00:24:46', '11112222', 0.00);
+INSERT INTO `provider` (`pid`, `fname`, `mname`, `lname`, `dob`, `gender`, `country`, `state`, `city`, `address`, `phnno`, `email`, `photo`, `average_rating`, `created_at`, `password`, `wallet`, `rating_count`) VALUES
+(5, 'Admin', NULL, 'Bhai', '2010-02-03', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'k', '9800000555', 'admin@gmail.com', '9800000555.png', 0.0, '2026-02-07 08:08:07', '11112222', 0.00, 0),
+(6, 'Provider', NULL, 'Bhai', '2010-02-01', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'hlo', '9800002222', 'providerbhai@gmail.com', 'provider_6_1770813318.png', 4.5, '2026-02-07 08:36:47', '12341234', 0.00, 4),
+(7, 'Provider', NULL, 'Dai', '2010-02-10', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'hio', '9800000111', 'providerdai@gmail.com', '9800000111.png', 2.0, '2026-02-11 00:24:46', '11112222', 200.00, 1);
 
 -- --------------------------------------------------------
 
@@ -119,12 +121,26 @@ INSERT INTO `provider` (`pid`, `fname`, `mname`, `lname`, `dob`, `gender`, `coun
 
 CREATE TABLE `ratings` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `service_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL DEFAULT 0,
+  `service_id` int(11) DEFAULT NULL,
   `rating` decimal(2,1) NOT NULL,
   `comment` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `request_id` int(11) DEFAULT NULL,
+  `provider_id` int(11) NOT NULL,
+  `consumer_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ratings`
+--
+
+INSERT INTO `ratings` (`id`, `user_id`, `service_id`, `rating`, `comment`, `created_at`, `request_id`, `provider_id`, `consumer_id`) VALUES
+(1, 0, NULL, 5.0, '', '2026-02-12 03:11:33', NULL, 6, 4),
+(2, 0, NULL, 5.0, '', '2026-02-12 03:11:59', NULL, 6, 4),
+(3, 0, NULL, 3.0, '', '2026-02-12 03:12:52', NULL, 6, 4),
+(4, 0, NULL, 5.0, '', '2026-02-12 03:13:31', NULL, 6, 4),
+(5, 0, NULL, 2.0, '', '2026-02-12 04:08:26', NULL, 7, 4);
 
 -- --------------------------------------------------------
 
@@ -184,9 +200,13 @@ CREATE TABLE `service_request` (
 --
 
 INSERT INTO `service_request` (`srid`, `consumer_id`, `provider_id`, `service_id`, `req_date`, `req_time`, `status`, `work_status`, `payment_status`, `charge`, `last_modified`, `read_status_c`, `msgc`, `read_status`, `msgp`, `wallet`) VALUES
-(1, 4, 3, 1, '2026-02-05', 'Morning(Before Noon)', '0', '0', '0', 0.00, '2026-02-05 10:29:11', 1, 'Your Request has been sent to the provider. The provider will respond ASAP', 0, 'You have a new request', 0.00),
-(2, 4, 6, 1, '2026-02-11', 'Morning(Before Noon)', '0', '0', '0', 0.00, '2026-02-11 03:34:38', 0, 'Your Request has been sent to the provider. The provider will respond ASAP', 0, 'You have a new request', 0.00),
-(3, 4, 6, 2, '2026-02-12', 'Morning(Before Noon)', '0', '0', '0', 0.00, '2026-02-11 03:37:12', 0, 'Your Request has been sent to the provider. The provider will respond ASAP', 0, 'You have a new request', 0.00);
+(1, 4, 3, 1, '2026-02-05', 'Morning(Before Noon)', '0', '0', '0', 20.00, '2026-02-11 13:04:47', 1, 'Your Request has been sent to the provider. The provider will respond ASAP', 0, 'You have a new request', 0.00),
+(2, 4, 6, 1, '2026-02-11', 'Morning(Before Noon)', '1', '1', '1', 20.00, '2026-02-12 03:16:22', 1, 'Your Request has been sent to the provider. The provider will respond ASAP', 1, 'You have a new request', 20.00),
+(3, 4, 6, 2, '2026-02-12', 'Morning(Before Noon)', '1', '1', '1', 200.00, '2026-02-12 03:16:23', 1, 'Thank u for choosing us!! Please rate our service.', 1, 'You have a new request', -20.00),
+(4, 4, 6, 2, '2026-02-11', 'Morning(Before Noon)', '2', '2', '2', 20.00, '2026-02-12 02:23:27', 0, 'Your request has been rejected.', 1, 'You have a new request', 0.00),
+(5, 4, 7, 4, '2026-02-12', 'Afternoon', '1', '1', '1', 300.00, '2026-02-12 04:09:16', 1, 'Thank u for choosing us!! Please rate our service.', 1, 'You have a new request', -30.00),
+(6, 4, 7, 4, '2026-02-12', 'Morning(Before Noon)', '1', '1', '1', 200.00, '2026-02-12 04:13:45', 0, 'Thank u for choosing us!! Please rate our service.', 1, 'You have a new request', -20.00),
+(7, 4, 7, 4, '2026-02-12', 'Afternoon', '1', '1', '1', 200.00, '2026-02-12 04:15:27', 0, 'Thank u for choosing us!! Please rate our service.', 1, 'You have a new request', -20.00);
 
 -- --------------------------------------------------------
 
@@ -214,6 +234,31 @@ CREATE TABLE `service_table` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `system_settings`
+--
+
+CREATE TABLE `system_settings` (
+  `id` int(11) NOT NULL,
+  `system_name` varchar(255) NOT NULL,
+  `email1` varchar(255) NOT NULL,
+  `phnno1` varchar(50) NOT NULL,
+  `email2` varchar(255) DEFAULT NULL,
+  `phnno2` varchar(50) DEFAULT NULL,
+  `email3` varchar(255) DEFAULT NULL,
+  `phnno3` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `system_settings`
+--
+
+INSERT INTO `system_settings` (`id`, `system_name`, `email1`, `phnno1`, `email2`, `phnno2`, `email3`, `phnno3`, `created_at`) VALUES
+(1, 'melo', 'jptmax123@gmail.com', '9800000055', '', '', '', '', '2026-02-12 03:33:40');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -229,10 +274,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`uid`, `email`, `password`, `user_type`) VALUES
-(7, 'userbhai@gmail.com', '11112222', 1),
-(10, 'admin@gmail.com', '11112222', 3),
-(11, 'providerbhai@gmail.com', '11112222', 2),
-(12, 'providerdai@gmail.com', '11112222', 2);
+(7, 'userbhai@gmail.com', '12341234', 1),
+(10, 'admin@gmail.com', '12341234', 3),
+(11, 'providerbhai@gmail.com', '12341234', 2),
+(12, 'providerdai@gmail.com', '11112222', 2),
+(13, 'test1@test.com', '$2y$10$J1QraZTfXeLefWlPbpBjPuhjfxZsEhAQb97p4xc9etG0ztkrrSA9K', 1);
 
 -- --------------------------------------------------------
 
@@ -261,6 +307,13 @@ CREATE TABLE `user_table` (
   `Register_As` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+--
+-- Dumping data for table `user_table`
+--
+
+INSERT INTO `user_table` (`First_Name`, `Middle_Name`, `Last_Name`, `Gender`, `Birth_date`, `Mobile_No`, `LL_No`, `Country`, `State`, `City`, `Address`, `Pincode`, `Question`, `Answer`, `Photo`, `Email_id`, `Password`, `Register_As`) VALUES
+('John', 'A.', 'Doe', 'Male', '1990-01-01', '+9779800000000', 'LL123456', 'Nepal', 'Bagmati', 'Lalitpur', '123, Example Street', '44700', 'What is your pet’s name?', 'Fluffy', 'default.png', 'dummyuser@example.com', 'password123', 'Consumer');
+
 -- --------------------------------------------------------
 
 --
@@ -287,8 +340,9 @@ CREATE TABLE `verification_request` (
 --
 
 INSERT INTO `verification_request` (`vrid`, `service_id`, `provider_id`, `specification`, `estd_date`, `certificate_pic`, `status`, `read_status`, `read_status_a`, `msg`, `msga`, `last_modified`) VALUES
-(3, 1, 6, 'Good', '2026-01-21', 'uploads/Screenshot 2026-01-13 at 19.57.30.png', 1, 0, 0, 'Cancellation requested', 'You have a new cancellation request', '2026-02-11 03:33:37'),
-(4, 2, 6, 'Good', '2026-02-04', 'uploads/2 (1).png', 1, 0, 1, 'Your verification has been cancelled', 'You have a new verification request', '2026-02-11 03:36:32');
+(3, 1, 6, 'Good', '2026-01-21', 'uploads/Screenshot 2026-01-13 at 19.57.30.png', 3, 1, 1, 'Your verification has been cancelled', 'You have a new cancellation request', '2026-02-12 02:30:02'),
+(4, 2, 6, 'Good', '2026-02-04', 'uploads/2 (1).png', 1, 1, 1, 'Your verification has been cancelled', 'You have a new verification request', '2026-02-12 02:30:03'),
+(5, 4, 7, 'Good', '2026-02-12', 'uploads/Screenshot 2026-02-11 at 10.56.19.png', 1, 0, 1, 'Your verification request has been accepted', 'You have a new verification request', '2026-02-12 03:39:07');
 
 --
 -- Indexes for dumped tables
@@ -339,6 +393,12 @@ ALTER TABLE `service_table`
   ADD PRIMARY KEY (`Provider_emailid`,`Service_Id`);
 
 --
+-- Indexes for table `system_settings`
+--
+ALTER TABLE `system_settings`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -366,7 +426,7 @@ ALTER TABLE `verification_request`
 -- AUTO_INCREMENT for table `consumer`
 --
 ALTER TABLE `consumer`
-  MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `feedbacks`
@@ -384,7 +444,7 @@ ALTER TABLE `provider`
 -- AUTO_INCREMENT for table `ratings`
 --
 ALTER TABLE `ratings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -396,19 +456,25 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `service_request`
 --
 ALTER TABLE `service_request`
-  MODIFY `srid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `srid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `system_settings`
+--
+ALTER TABLE `system_settings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `verification_request`
 --
 ALTER TABLE `verification_request`
-  MODIFY `vrid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `vrid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
