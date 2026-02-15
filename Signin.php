@@ -73,68 +73,67 @@ if (isset($_POST["sbbtn"])) {
                     $user_stmt->execute();
                     $user_stmt->store_result();
 
-                    if ($user_stmt->num_rows > 0) {
-                        $user_stmt->bind_result($id, $fname, $mname, $lname, $img, $mno);
-                        $user_stmt->fetch();
+            if ($user_stmt->num_rows > 0) {
+                $user_stmt->bind_result($id, $fname, $mname, $lname, $img, $mno);
+                $user_stmt->fetch();
 
-                        // Start consumer-specific session
-                        // session_name('consumer_session');
-                        // session_start();
-                        $_SESSION['consumer_id'] = $id;
-                        $_SESSION["consumer_name"] = $fname . " " . $mname . " " . $lname;
-                        $_SESSION["consumer_img"] = $img;
-                        $_SESSION["consumer_mno"] = $mno;
-                        $_SESSION["consumer_emailid"] = $emailid;
-                        $_SESSION["consumer_utype"] = "Consumer";
+                // Start consumer-specific session
+                // session_name('consumer_session');
+                // session_start();
+                $_SESSION['consumer_id'] = $id;
+                $_SESSION["consumer_name"] = $fname . " " . $mname . " " . $lname;
+                $_SESSION["consumer_img"] = $img;
+                $_SESSION["consumer_mno"] = $mno;
+                $_SESSION["consumer_emailid"] = $emailid;
+                $_SESSION["consumer_utype"] = "Consumer";
 
-                        header("Location: Welcome.php");
-                        exit();
-                    } else {
-                        $_SESSION['login_msg'] = "Consumer data not found...";
-                    }
-                    $user_stmt->close();
-            } elseif ($user_type == 2) { // Provider
-                // Provider: Fetch data from the 'provider' table
-                $user_query = "SELECT pid, fname, mname, lname, photo, phnno FROM provider WHERE email=?";
-                $user_stmt = $con->prepare($user_query);
-                $user_stmt->bind_param("s", $emailid);
-                $user_stmt->execute();
-                $user_stmt->store_result();
-
-                if ($user_stmt->num_rows > 0) {
-    $user_stmt->bind_result($id, $fname, $mname, $lname, $img, $mno);
-    $user_stmt->fetch();
-
-    $_SESSION['provider_id'] = $id;
-    $_SESSION["provider_name"] = "$fname $mname $lname";
-    $_SESSION["provider_img"] = $img;
-    $_SESSION["provider_mno"] = $mno;
-    $_SESSION["provider_emailid"] = $emailid;
-    $_SESSION["provider_utype"] = "Provider";
-
-    // TEMP DEBUG
-    // echo "SESSION VARS:<br>";
-    // echo "<pre>";
-    // print_r($_SESSION);
-    // echo "</pre>";
-    // exit();
-
-    header("Location: Mservices.php");
-    exit();
-}
- else {
-                    $_SESSION['login_msg'] = "Provider data not found...";
-                }
-                $user_stmt->close();
+                header("Location: Welcome.php");
+                exit();
             } else {
-                $_SESSION['login_msg'] = "Unknown user type...";
+                $_SESSION['login_msg'] = "Consumer data not found...";
             }
+            $user_stmt->close();
+        } elseif ($user_type == 2) { // Provider
+            // Provider: Fetch data from the 'provider' table
+            $user_query = "SELECT pid, fname, mname, lname, photo, phnno FROM provider WHERE email=?";
+            $user_stmt = $con->prepare($user_query);
+            $user_stmt->bind_param("s", $emailid);
+            $user_stmt->execute();
+            $user_stmt->store_result();
+
+            if ($user_stmt->num_rows > 0) {
+                $user_stmt->bind_result($id, $fname, $mname, $lname, $img, $mno);
+                $user_stmt->fetch();
+
+                $_SESSION['provider_id'] = $id;
+                $_SESSION["provider_name"] = "$fname $mname $lname";
+                $_SESSION["provider_img"] = $img;
+                $_SESSION["provider_mno"] = $mno;
+                $_SESSION["provider_emailid"] = $emailid;
+                $_SESSION["provider_utype"] = "Provider";
+
+                // TEMP DEBUG
+                // echo "SESSION VARS:<br>";
+                // echo "<pre>";
+                // print_r($_SESSION);
+                // echo "</pre>";
+                // exit();
+
+                header("Location: Mservices.php");
+                exit();
+            } else {
+                $_SESSION['login_msg'] = "Provider data not found...";
+            }
+            $user_stmt->close();
         } else {
-            $_SESSION['login_msg'] = "Invalid Email or Password...";
+            $_SESSION['login_msg'] = "Unknown user type...";
         }
     } else {
         $_SESSION['login_msg'] = "Invalid Email or Password...";
     }
+} else {
+    $_SESSION['login_msg'] = "Invalid Email or Password...";
+}
     $stmt->close();
 }
     $con->close();

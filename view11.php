@@ -15,21 +15,53 @@ if (mysqli_connect_errno()) {
     die("Database connection failed: " . mysqli_connect_error());
 }
 
+// Haversine formula: calculates distance between two coordinates in km
+function haversine($lat1, $lon1, $lat2, $lon2) {
+    if (!$lat1 || !$lon1 || !$lat2 || !$lon2) return null;
+
+    $earth_radius = 6371; // in km
+    $dLat = deg2rad($lat2 - $lat1);
+    $dLon = deg2rad($lon2 - $lon1);
+
+    $a = sin($dLat/2) * sin($dLat/2) +
+         cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+         sin($dLon/2) * sin($dLon/2);
+
+    $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+    return $earth_radius * $c;
+}
+
 // Handle filters
 $status_filter = isset($_GET['status']) && $_GET['status'] !== '' ? $_GET['status'] : null;
 $date_filter = isset($_GET['date']) && $_GET['date'] !== '' ? $_GET['date'] : null;
 $work_payment_filter = isset($_GET['work_payment']) && $_GET['work_payment'] !== '' ? $_GET['work_payment'] : null;
-
 $query = "SELECT 
             sr.srid, sr.req_date, sr.req_time, sr.status, sr.work_status, sr.payment_status, sr.charge,
+            sr.user_lat, sr.user_lng,                     -- consumer coordinates
             c.fname AS cfname, c.mname AS cmname, c.lname AS clname, c.phnno AS cphone, c.photo AS cphoto,
             p.fname AS pfname, p.mname AS pmname, p.lname AS plname, p.phnno AS pphone, p.photo AS pphoto,
+            p.latitude, p.longitude,                       -- provider coordinates
             s.sname AS service_name
           FROM service_request sr
           JOIN consumer c ON sr.consumer_id = c.cid
           JOIN provider p ON sr.provider_id = p.pid
           JOIN services s ON sr.service_id = s.sid ";
+$result = $con->query($query);
+if (!$result) {
+    die("Query failed: " . $con->error);
+}
+while ($row = $result->fetch_assoc()) {
 
+    // Calculate distance here
+    $consumer_lat = $row['user_lat'];
+    $consumer_lng = $row['user_lng'];
+
+    $provider_lat = $row['latitude'];
+    $provider_lng = $row['longitude'];
+
+    $distance = haversine($consumer_lat, $consumer_lng, $provider_lat, $provider_lng);
+    $distance_text = is_numeric($distance) ? round($distance, 2) . ' km' : 'N/A';
+} // end while
 
 $where_clauses = [];
 $params = [];
@@ -560,23 +592,39 @@ $result = $stmt->get_result();
                                         </div>
                                     </div>
                                     
-                                    <div class="user-info">
-                                        <img src="<?= $row['pphoto'] ? 'uploads/' . $row['pphoto'] : 'https://via.placeholder.com/60?text=P' ?>" 
-                                             alt="Provider" class="user-avatar" 
-                                             onclick="openModal('<?= $row['pphoto'] ? 'uploads/' . $row['pphoto'] : 'https://via.placeholder.com/150?text=P' ?>')">
-                                        <div class="user-details">
-                                            <h3 class="user-name">
-                                                <i class="fas fa-user-tie"></i> 
-                                                <?= $row['pfname'] . ' ' . $row['pmname'] . ' ' . $row['plname'] ?>
-                                            </h3>
-                                            <span class="user-role">
-                                                <i class="fas fa-briefcase"></i> Service Provider
-                                            </span>
-                                            <div style="margin-top: 5px;">
-                                                <i class="fas fa-phone"></i> <?= $row['pphone'] ?>
-                                            </div>
-                                        </div>
-                                    </div>
+                                   <div class="user-info">
+    <img src="<?= $row['pphoto'] ? 'uploads/' . $row['pphoto'] : 'https://via.placeholder.com/60?text=P' ?>" 
+         alt="Provider" class="user-avatar" 
+         onclick="openModal('<?= $row['pphoto'] ? 'uploads/' . $row['pphoto'] : 'https://via.placeholder.com/150?text=P' ?>')">
+    <div class="user-details">
+        <h3 class="user-name">
+            <i class="fas fa-user-tie"></i> 
+            <?= $row['pfname'] . ' ' . $row['pmname'] . ' ' . $row['plname'] ?>
+        </h3>
+        <span class="user-role">
+            <i class="fas fa-briefcase"></i> Service Provider
+        </span>
+        <div style="margin-top: 5px;">
+            <i class="fas fa-phone"></i> <?= $row['pphone'] ?>
+        </div>
+        
+        <!-- Distance info -->
+<?php
+$consumer_lat = $row['user_lat'];
+$consumer_lng = $row['user_lng'];
+$provider_lat = $row['latitude'];
+$provider_lng = $row['longitude'];
+
+$distance = haversine($consumer_lat, $consumer_lng, $provider_lat, $provider_lng);
+$distance_text = is_numeric($distance) ? round($distance, 2) . ' km' : 'N/A';
+?>
+<div style="margin-top: 8px; font-size: 14px; color: #333;">
+    <i class="fas fa-road"></i> Distance: <strong><?= $distance_text ?></strong>
+</div>
+
+    </div>
+</div>
+
                                     
                                     <div class="booking-details">
                                         <div class="detail-item">

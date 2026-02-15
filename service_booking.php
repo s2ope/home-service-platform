@@ -199,7 +199,7 @@ if ($pid != '' && $sid != '') {
     <div id="main">
         <div class="inner">
             <header id="header">
-                <a href="index.html" class="logo"><strong>Ghar Sewa</strong></a>
+                <a href="welcome.php" class="logo"><strong>Ghar Sewa</strong></a>
             </header>
 
             <br>
@@ -207,89 +207,133 @@ if ($pid != '' && $sid != '') {
             <hr class="major" />
             <div class="row gtr-200">
                 <div class="col-6 col-12-medium">
-                    <form method="post" action="service_booking.php?pid=<?php echo htmlspecialchars($pid); ?>&sname=<?php echo htmlspecialchars($sname); ?>">
-                        <div class="row gtr-uniform">
-                            <div class="col-12">
-                                <?php if (!empty($msg)): ?>
-                                    <label><h3 style="color:<?php echo $msg_color; ?>"><?php echo $msg; ?></h3></label>
-                                <?php endif; ?>
-                            </div>
+<form method="post" action="service_booking.php?pid=<?php echo htmlspecialchars($pid); ?>&sname=<?php echo htmlspecialchars($sname); ?>">
+    <div class="row gtr-uniform">
 
-                            <?php if ($pid == ''): ?>
-                                <div class="col-12">
-                                    <h3 style="color:red">No valid provider selected. Please go back and try again.</h3>
-                                </div>
-                            <?php else: ?>
-                                <div class="col-12">
-                                    <label>Requested Date</label>
-                                    <input type="date" name="req_date" id="req_date" min="<?php echo date('Y-m-d'); ?>" required />
-                                </div>
+        <!-- Message -->
+        <?php if (!empty($msg)): ?>
+        <div class="col-12">
+            <h3 style="color:<?php echo $msg_color; ?>">
+                <?php echo $msg; ?>
+            </h3>
+        </div>
+        <?php endif; ?>
 
-                                                  <label>Select Time Slot</label>
-                            <select name="req_time" required>
-                                <?php
-                                foreach ($slots as $slot) {
-                                    $disabled = in_array($slot, $booked) ? 'disabled' : '';
-                                    $display = date('h:i A', strtotime($slot)) . " - " . date('h:i A', strtotime($slot . ' +1 hour'));
-                                    echo "<option value='$slot' $disabled>$display</option>";
-                                }
-                                ?>
-                            </select>
-                            <br><br><br>
-                            <label>Service Duration</label>
-                            <input type="number" name="service_duration" value="60" class="primary" readonly /> <!-- Fixed 1-hour slot -->
-                            <br><br><br>
-                            <!-- Optional Call Provider -->
-                            <a href="tel:+<?php echo $provider_phone; ?>" class="call-btn">Call Provider</a>
+        <?php if ($pid == ''): ?>
 
-                                <input type="hidden" name="pname" value="<?php echo htmlspecialchars(isset($_GET["pname"]) ? $_GET["pname"] : ""); ?>" />
-                                <input type="hidden" name="pemailid" value="<?php echo htmlspecialchars(isset($_GET["email"]) ? $_GET["email"] : ""); ?>" />
-                                <input type="hidden" name="pphnno" value="<?php echo htmlspecialchars(isset($_GET["phnno"]) ? $_GET["phnno"] : ""); ?>" />
-                                <input type="hidden" name="sid" value="<?php echo htmlspecialchars($sid); ?>" />
-                                <input type="hidden" name="stype" value="<?php echo htmlspecialchars(isset($_GET["sname"]) ? $_GET["sname"] : ""); ?>" />
-                                <input type="hidden" name="pid" value="<?php echo htmlspecialchars($pid); ?>" />
-                                <input type="hidden" name="sname" value="<?php echo htmlspecialchars($sname); ?>" />
-<input type="hidden" id="user_lat" name="user_lat" value="<?php echo $selected_lat ?? ''; ?>">
-<input type="hidden" id="user_lng" name="user_lng" value="<?php echo $selected_lng ?? ''; ?>">
+        <div class="col-12">
+            <h3 style="color:red">
+                No valid provider selected. Please go back and try again.
+            </h3>
+        </div>
 
- <div class="col-12">
-                                            <ul class="actions">
-                                                <label>Location:</label>
-                                                <li><input type="text" id="location_display" value="<?php 
-    if(!empty($selected_lat) && !empty($selected_lng)){
-        echo $selected_lat . ", " . $selected_lng;
-    }
-?>" readonly></li>
-                                            </ul>
-                                        </div>
+        <?php else: ?>
+
+        <!-- Requested Date -->
+        <div class="col-12">
+            <label>Requested Date</label>
+            <input type="date"
+                   name="req_date"
+                   id="req_date"
+                   min="<?php echo date('Y-m-d'); ?>"
+                   required />
+        </div>
+
+        <!-- Time Slot -->
+        <div class="col-12">
+            <label>Select Time Slot</label>
+            <select name="req_time" required>
+                <option value="">-- Select Time --</option>
+                <?php
+                foreach ($slots as $slot) {
+                    $disabled = in_array($slot, $booked) ? 'disabled' : '';
+                    $display = date('h:i A', strtotime($slot)) . " - " .
+                               date('h:i A', strtotime($slot . ' +1 hour'));
+                    echo "<option value='$slot' $disabled>$display</option>";
+                }
+                ?>
+            </select>
+        </div>
+
+        <!-- Service Duration -->
+        <div class="col-12">
+            <label>Service Duration (Minutes)</label>
+            <input type="number"
+                   name="service_duration"
+                   value="60"
+                   class="primary"
+                   readonly />
+        </div>
+
+        <!-- Call Provider -->
+        <div class="col-12">
+            <a href="tel:+<?php echo $provider_phone; ?>" class="call-btn">
+                Call Provider for custom duration
+            </a>
+        </div>
+
+        <!-- Hidden Fields -->
+        <input type="hidden" name="pname" value="<?php echo htmlspecialchars($_GET["pname"] ?? ""); ?>">
+        <input type="hidden" name="pemailid" value="<?php echo htmlspecialchars($_GET["email"] ?? ""); ?>">
+        <input type="hidden" name="pphnno" value="<?php echo htmlspecialchars($_GET["phnno"] ?? ""); ?>">
+        <input type="hidden" name="sid" value="<?php echo htmlspecialchars($sid); ?>">
+        <input type="hidden" name="stype" value="<?php echo htmlspecialchars($_GET["sname"] ?? ""); ?>">
+        <input type="hidden" name="pid" value="<?php echo htmlspecialchars($pid); ?>">
+        <input type="hidden" name="sname" value="<?php echo htmlspecialchars($sname); ?>">
 
 
 
-<br><br>
+        <!-- Location Display -->
+        <div class="col-12">
+            <label>Location (Optional)</label>
+            <input type="text"
+                   id="location_display"
+                   placeholder="Read only - Click 'Select Location' to choose"
+                   value="<?php
+                       if(!empty($selected_lat) && !empty($selected_lng)){
+                           echo $selected_lat . ', ' . $selected_lng;
+                       }
+                   ?>"
+                   readonly
+                   required />
+        </div>
 
- <div class="col-12">
-                                            <ul class="actions">
-                                                <li><button type="button" name="sbbtn" class="primary" onclick="openMap()">Select Location</button></li>
-                                            </ul>
-                                        </div>
+        <!-- Select Location Button -->
+        <div class="col-12">
+            <ul class="actions">
+                <li>
+                    <input type="button"
+                           class="primary"
+                           onclick="openMap()"
+                           value="Select Location" required />
+                </li>
+            </ul>
+        </div>
+     <!-- Location Hidden -->
+        <input type="hidden" id="user_lat" name="user_lat" value="<?php echo $selected_lat ?? ''; ?>">
+        <input type="hidden" id="user_lng" name="user_lng" value="<?php echo $selected_lng ?? ''; ?>">
+        <!-- Note -->
+        <div class="col-12">
+            <strong>Note:</strong> Total Cost will be determined after the provider assesses your request.
+        </div>
 
+        <!-- Submit -->
+        <div class="col-12">
+            <ul class="actions">
+                <li>
+                   <button type="submit" name="sbbtn" class="primary">
+    Book Service
+</button>
 
+                </li>
+            </ul>
+        </div>
 
+        <?php endif; ?>
 
+    </div>
+</form>
 
-
-                                <div class="col-12">
-                                    <div><strong>Note:</strong> Total Cost will be determined after the provider assesses your request.</div>
-                                </div>
-
-                                <div class="col-12">
-                                    <ul class="actions">
-                                        <li><input type="submit" name="sbbtn" value="Book Service" class="primary" /></li>
-                                    </ul>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>

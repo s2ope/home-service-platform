@@ -16,8 +16,20 @@ if (isset($_SESSION['provider_id']) && !empty($_SESSION['provider_id'])) {
     $provider_name = $_SESSION['provider_name'] ?? '';
 } else {
     echo "No provider logged in!";
+     header("Location: Signup.php");
     exit();
 }
+
+// 3️⃣ Get provider's current location
+$provider_sql = "SELECT latitude, longitude FROM provider WHERE pid = ?";
+$stmt = $con->prepare($provider_sql);
+$stmt->bind_param("i", $provider_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$provider = $result->fetch_assoc();
+
+$provider_lat = $provider['latitude'] ?? null;
+$provider_lng = $provider['longitude'] ?? null;
 
 // 2️⃣ Sorting option
 $sort_order = 'ASC';
@@ -54,6 +66,21 @@ while ($row = mysqli_fetch_assoc($result)) {
     }
     $locations[] = $row;
 }
+
+// 5️⃣ Handle AJAX save for provider location
+if(isset($_POST['save_location'])){
+    $lat = floatval($_POST['lat']);
+    $lng = floatval($_POST['lng']);
+
+    $update_sql = "UPDATE provider SET latitude=?, longitude=? WHERE pid=?";
+    $stmt = $con->prepare($update_sql);
+    $stmt->bind_param("ddi", $lat, $lng, $provider_id);
+    $stmt->execute();
+
+    echo json_encode(['success' => true]);
+    exit;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -127,7 +154,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                         </select>
                     </form>
 
-                    <br>
+                    <!-- <br> -->
 
                     <!-- Bookings Table with consumer info -->
                     <table>
@@ -162,7 +189,11 @@ while ($row = mysqli_fetch_assoc($result)) {
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+<p id="distanceDisplay"></p>
 
+<br>
+<button id="saveBtn" class="primary">Save My Location</button>
+<br><br>
                     <!-- Map -->
                     <div id="map"></div>
 
@@ -192,6 +223,19 @@ var map = L.map('map').setView([27.7172, 85.3240], 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
 }).addTo(map);
+
+// Provider marker
+var providerMarker = null;
+<?php if($provider_lat && $provider_lng): ?>
+providerMarker = L.marker([<?= $provider_lat ?>, <?= $provider_lng ?>], {draggable: true})
+    .addTo(map)
+    .bindPopup("Your Location").openPopup();
+<?php endif; ?>
+
+map.on('click', function(e){
+    if(providerMarker) map.removeLayer(providerMarker);
+    providerMarker = L.marker(e.latlng, {draggable: true}).addTo(map).bindPopup("Your Location").openPopup();
+});
 
 var locations = <?php echo json_encode($locations); ?>;
 
@@ -230,6 +274,35 @@ locations.forEach(function(loc){
         );
     }
 });
+
+
+
+// 
+
+
+// Save provider location via AJAX
+document.getElementById("saveBtn").addEventListener("click", function(){
+    if(!providerMarker){
+        alert("Please select your location first!");
+        return;
+    }
+
+    var latlng = providerMarker.getLatLng();
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "provider_map.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.onload = function(){
+        if(xhr.status === 200){
+            var res = JSON.parse(xhr.responseText);
+            if(res.success){
+                alert("Location saved successfully!");
+            }
+        }
+    };
+    xhr.send("save_location=1&lat=" + latlng.lat + "&lng=" + latlng.lng);
+});
+
 </script>
 
 <script src="assets/js/jquery.min.js"></script>
