@@ -237,8 +237,8 @@ if ($pid != '' && $sid != '') {
                             </select>
                             <br><br><br>
                             <label>Service Duration</label>
-                            <input type="number" name="service_duration" value="60" readonly /> <!-- Fixed 1-hour slot -->
-
+                            <input type="number" name="service_duration" value="60" class="primary" readonly /> <!-- Fixed 1-hour slot -->
+                            <br><br><br>
                             <!-- Optional Call Provider -->
                             <a href="tel:+<?php echo $provider_phone; ?>" class="call-btn">Call Provider</a>
 
@@ -252,16 +252,28 @@ if ($pid != '' && $sid != '') {
 <input type="hidden" id="user_lat" name="user_lat" value="<?php echo $selected_lat ?? ''; ?>">
 <input type="hidden" id="user_lng" name="user_lng" value="<?php echo $selected_lng ?? ''; ?>">
 
-Location:
-<input type="text" id="location_display" value="<?php 
+ <div class="col-12">
+                                            <ul class="actions">
+                                                <label>Location:</label>
+                                                <li><input type="text" id="location_display" value="<?php 
     if(!empty($selected_lat) && !empty($selected_lng)){
         echo $selected_lat . ", " . $selected_lng;
     }
-?>" readonly>
+?>" readonly></li>
+                                            </ul>
+                                        </div>
+
+
 
 <br><br>
 
-<button type="button" name="sbbtn" class="primary" onclick="openMap()">Select Location</button>
+ <div class="col-12">
+                                            <ul class="actions">
+                                                <li><button type="button" name="sbbtn" class="primary" onclick="openMap()">Select Location</button></li>
+                                            </ul>
+                                        </div>
+
+
 
 
 
