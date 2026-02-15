@@ -26,49 +26,56 @@ if(isset($_SESSION['rating_msg'])) {
     unset($_SESSION['rating_msg_color']);
 }
 if(isset($_GET['payment']) && isset($_GET['srid'])) {
-    $srid = $_GET['srid'];
-    
+    $srid = intval($_GET['srid']);
+    $txid = $_GET['refId'] ?? 'good'; // <-- eSewa transaction ID
+
     if($_GET['payment'] == 'success') {
-        // First update payment status and messages
-        $update_query = "UPDATE service_request SET payment_status = 1, read_status = 0, msgp = 'Payment Received for Your Service..!!', read_status_c = 0, msgc = 'Thank u for choosing us!! Please rate our service' WHERE srid = ?";
+        // update payment status and transaction_id
+        $update_query = "UPDATE service_request 
+                         SET payment_status = 1,
+                             read_status = 0,
+                             msgp = 'Payment Received for Your Service..!!',
+                             read_status_c = 0,
+                             msgc = 'Thank you for choosing us!! Please rate our service',
+                             transaction_id = ?
+                         WHERE srid = ?";
         $stmt = $con->prepare($update_query);
-        $stmt->bind_param("s", $srid);
+        $stmt->bind_param("si", $txid, $srid);
         $stmt->execute();
-        
-        // Get the charge amount
+        $stmt->close();
+
+        // update wallet if charge > 0
         $charge_query = "SELECT charge FROM service_request WHERE srid = ?";
         $charge_stmt = $con->prepare($charge_query);
-        $charge_stmt->bind_param("s", $srid);
+        $charge_stmt->bind_param("i", $srid);
         $charge_stmt->execute();
         $charge_stmt->bind_result($charge);
         $charge_stmt->fetch();
         $charge_stmt->close();
-        
-        if ($charge > 0) {
-            // Calculate 90% of the charge
+
+        if($charge > 0) {
             $wallet_amount = $charge * 0.9;
-            
-            // Update the wallet column
             $wallet_query = "UPDATE service_request SET wallet = ? WHERE srid = ?";
             $wallet_stmt = $con->prepare($wallet_query);
-            $wallet_stmt->bind_param("ds", $wallet_amount, $srid);
+            $wallet_stmt->bind_param("di", $wallet_amount, $srid);
             $wallet_stmt->execute();
             $wallet_stmt->close();
         }
-        
+
         $msg = "Payment completed successfully!";
-        $msg_color = 'green';
+        $msg_color = "green";
     } else {
         $msg = "Payment failed. Please try again.";
-        $msg_color = 'red';
+        $msg_color = "red";
     }
-    
+
     $_SESSION['payment_msg'] = $msg;
     $_SESSION['payment_msg_color'] = $msg_color;
-    
-    header("Location: " . strtok($current_url, '?'));
+
+    header("Location: " . strtok($_SERVER['PHP_SELF'], '?'));
     exit();
 }
+
 
 if(isset($_SESSION['payment_msg'])) {
     $msg = $_SESSION['payment_msg'];
@@ -810,6 +817,7 @@ $stmt->bind_result($fname, $mname, $lname,$photo,$average_rating, $srid, $addres
                                                     <?php if ($workstatus!=1):?>
                                                     <form method="post" action="mybookings1.php" class="action-form">
                                                         <input type="hidden" name="srid" value="<?= $srid ?>">
+                                                        <input type="hidden" name="txid" id="txid">
                                                         <input type="hidden" name="update_read_status" value="1">
                                                         <button type="submit" class="notification-btn mark-read button primary ">
                                                             <i class="fas fa-check-circle"></i> Mark Read
@@ -1143,7 +1151,8 @@ $stmt->bind_result($fname, $mname, $lname,$photo,$average_rating, $srid, $addres
                 });
             });
         });
-        
+       
+
         function openImageModal(imageSrc) {
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImage');

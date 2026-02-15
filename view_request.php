@@ -742,8 +742,7 @@ if (isset($_POST['paid_cash'])) {
                             }
 
                             $provider_id = $_SESSION["provider_id"];
-                            $query1 = "
-SELECT 
+                            $query1 = "SELECT 
     sr.srid, 
     c.fname, c.mname, c.lname, 
     c.address, c.city, c.state, c.country, 

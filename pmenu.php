@@ -179,9 +179,11 @@ $empty_stars = 5 - $full_stars - ($has_half_star ? 1 : 0);
     <header class="major">
 	<h2>Menu</h2>
 </header>
+
     <ul>
         <li><a href="Mservices.php">Verify Services <?php if($unread_verification_count>0) echo '<span class="unread-badge">'.$unread_verification_count.'</span>'; ?></a></li>
         <li><a href="view_request.php">Active Requests <?php if($unread_service_count>0) echo '<span class="unread-badge">'.$unread_service_count.'</span>'; ?></a></li>
+        <li><a href="provider_map.php">View Map</a></li>
         <li><a href="View_report.php">Request History</a></li>
         <li><a href="update_bill.php">Update Bill</a></li>
         <li><a href="Provider_Cpass.php">My Account</a></li>
