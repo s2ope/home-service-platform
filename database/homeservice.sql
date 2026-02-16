@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 13, 2026 at 03:00 AM
+-- Generation Time: Feb 15, 2026 at 04:11 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -50,7 +50,8 @@ CREATE TABLE `consumer` (
 --
 
 INSERT INTO `consumer` (`cid`, `fname`, `mname`, `lname`, `dob`, `gender`, `country`, `state`, `city`, `address`, `phnno`, `email`, `password`, `photo`, `created_at`) VALUES
-(6, 'User', NULL, 'Dai', '2010-02-12', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'fsaf', '9800000360', 'userdai@gmail.com', '$2y$10$mYZpAurATHmmLIe9KEXYl.LGYPuNfwnHF0ZAGnZstmel0XnDl7L.2', '9800000360.png', '2026-02-12 11:33:10');
+(6, 'User', NULL, 'Dai', '2010-02-12', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'fsaf', '9800000360', 'userdai@gmail.com', '$2y$10$mYZpAurATHmmLIe9KEXYl.LGYPuNfwnHF0ZAGnZstmel0XnDl7L.2', '9800000360.png', '2026-02-12 11:33:10'),
+(7, 'User', NULL, 'Bhai', '2010-02-15', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'fd', '9800000086', 'userbhai@gmail.com', '$2y$10$Q9ucdGxABVR.2vQnl4tjC.dWKpTpYj.U8hqc4hSFgZ6YisZT1io52', '9800000086.png', '2026-02-15 08:02:38');
 
 -- --------------------------------------------------------
 
@@ -99,17 +100,19 @@ CREATE TABLE `provider` (
   `average_rating` decimal(2,1) DEFAULT 0.0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `password` varchar(255) NOT NULL,
-  `wallet` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `rating_count` int(11) NOT NULL DEFAULT 0
+  `rating_count` int(11) NOT NULL DEFAULT 0,
+  `latitude` decimal(10,8) DEFAULT NULL,
+  `longitude` decimal(11,8) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `provider`
 --
 
-INSERT INTO `provider` (`pid`, `fname`, `mname`, `lname`, `dob`, `gender`, `country`, `state`, `city`, `address`, `phnno`, `email`, `photo`, `average_rating`, `created_at`, `password`, `wallet`, `rating_count`) VALUES
-(8, 'Admin', NULL, 'Dai', '2010-02-12', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'gh', '9800220022', 'admin@gmail.com', '9800220022.png', 0.0, '2026-02-12 07:20:22', '$2y$10$0KaSZl1YtCdgVsXTBngQ4eOeQ2XmKp8Mrc44ilQE3ZtCByJsPna1W', 1000.00, 0),
-(9, 'Provider', NULL, 'Dai', '2010-02-03', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'ftet', '9811223344', 'providerdai@gmail.com', '9811223344.png', 5.0, '2026-02-12 11:19:54', '$2y$10$0dOJQ.NG8ufOt6ymLRnVIuMJxXJ4eLea1ptr8acLSXg5W2aNZtnam', 1000.00, 1);
+INSERT INTO `provider` (`pid`, `fname`, `mname`, `lname`, `dob`, `gender`, `country`, `state`, `city`, `address`, `phnno`, `email`, `photo`, `average_rating`, `created_at`, `password`, `rating_count`, `latitude`, `longitude`) VALUES
+(8, 'Admin', NULL, 'Dai', '2010-02-12', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'gh', '9800220022', 'admin@gmail.com', '9800220022.png', 0.0, '2026-02-12 07:20:22', '$2y$10$0KaSZl1YtCdgVsXTBngQ4eOeQ2XmKp8Mrc44ilQE3ZtCByJsPna1W', 0, 57.70090581, 45.29373169),
+(9, 'Provider', NULL, 'Dai', '2010-02-03', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'ftet', '9811223344', 'providerdai@gmail.com', 'provider_9_1771136958.png', 4.0, '2026-02-12 11:19:54', '$2y$10$0dOJQ.NG8ufOt6ymLRnVIuMJxXJ4eLea1ptr8acLSXg5W2aNZtnam', 2, 27.71650945, 85.26897323),
+(11, 'Provider', NULL, 'Bhai', '2010-02-09', 'Male', 'Nepal', 'Bagmati', 'Kathmandu', 'hi', '9800000667', 'providerbhai@gmail.com', '9800000667.png', 0.0, '2026-02-15 04:00:17', '$2y$10$QnYbal.pb1fMjYpAixItDeX8XPZSEOQ6.zyWD8p1Wx.gZYYIVTwvS', 0, 27.67022633, 85.42651330);
 
 -- --------------------------------------------------------
 
@@ -139,7 +142,8 @@ INSERT INTO `ratings` (`id`, `user_id`, `service_id`, `rating`, `comment`, `crea
 (3, 0, NULL, 3.0, '', '2026-02-12 03:12:52', NULL, 6, 4),
 (4, 0, NULL, 5.0, '', '2026-02-12 03:13:31', NULL, 6, 4),
 (5, 0, NULL, 2.0, '', '2026-02-12 04:08:26', NULL, 7, 4),
-(6, 0, NULL, 5.0, '', '2026-02-12 11:24:49', NULL, 9, 5);
+(6, 0, NULL, 5.0, '', '2026-02-12 11:24:49', NULL, 9, 5),
+(7, 0, NULL, 3.0, '', '2026-02-14 11:57:37', NULL, 9, 6);
 
 -- --------------------------------------------------------
 
@@ -191,16 +195,23 @@ CREATE TABLE `service_request` (
   `msgc` varchar(255) DEFAULT NULL,
   `read_status` tinyint(1) DEFAULT 0,
   `msgp` varchar(255) DEFAULT NULL,
-  `wallet` decimal(10,2) NOT NULL DEFAULT 0.00
+  `wallet` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `service_duration` int(11) NOT NULL DEFAULT 60 COMMENT 'Duration of service in minutes',
+  `transaction_id` text DEFAULT NULL,
+  `user_lat` decimal(10,8) DEFAULT NULL,
+  `user_lng` decimal(11,8) DEFAULT NULL,
+  `distance_km` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `service_request`
 --
 
-INSERT INTO `service_request` (`srid`, `consumer_id`, `provider_id`, `service_id`, `req_date`, `req_time`, `status`, `work_status`, `payment_status`, `charge`, `last_modified`, `read_status_c`, `msgc`, `read_status`, `msgp`, `wallet`) VALUES
-(12, 6, 9, 5, '2026-02-13', 'Morning(Before Noon)', '1', '1', '1', 300.00, '2026-02-13 01:58:38', 0, 'Thank u for choosing us!! Please rate our service.', 1, 'You have a new request', -30.00),
-(13, 6, 9, 5, '2026-02-14', 'Morning(Before Noon)', '1', '1', '0', 300.00, '2026-02-13 01:59:32', 0, 'Bill Amount Updated..Please Proceed with the payment..', 1, 'You have a new request', 0.00);
+INSERT INTO `service_request` (`srid`, `consumer_id`, `provider_id`, `service_id`, `req_date`, `req_time`, `status`, `work_status`, `payment_status`, `charge`, `last_modified`, `read_status_c`, `msgc`, `read_status`, `msgp`, `wallet`, `service_duration`, `transaction_id`, `user_lat`, `user_lng`, `distance_km`) VALUES
+(60, 7, 9, 5, '2026-02-20', '17:00', '1', '1', '0', 300.00, '2026-02-15 09:54:43', 0, 'Bill Amount Updated..Please Proceed with the payment..', 1, 'You have a new request', 0.00, 60, NULL, 27.70090581, 85.29373169, NULL),
+(61, 6, 11, 5, '2026-02-16', '10:00', '1', '0', '0', 500.00, '2026-02-15 09:56:11', 0, 'Bill Amount Updated..Please Proceed with the payment..', 1, 'You have a new request', 0.00, 60, NULL, 27.70029786, 85.29201508, NULL),
+(62, 6, 9, 5, '2026-02-17', '12:00', '1', '0', '0', 500.00, '2026-02-15 09:56:31', 0, 'Bill Amount Updated..Please Proceed with the payment..', 1, 'You have a new request', 0.00, 60, NULL, 0.00000000, 0.00000000, NULL),
+(63, 6, 9, 5, '2026-02-16', '10:00', '0', '0', '1', 0.00, '2026-02-15 13:51:35', 0, 'Your Request has been sent to the provider. The provider will respond ASAP', 0, 'You have a new request', 0.00, 60, NULL, 27.69984190, 85.29321671, NULL);
 
 -- --------------------------------------------------------
 
@@ -270,7 +281,9 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`uid`, `email`, `password`, `user_type`) VALUES
 (14, 'admin@gmail.com', '$2y$10$0KaSZl1YtCdgVsXTBngQ4eOeQ2XmKp8Mrc44ilQE3ZtCByJsPna1W', 2),
 (15, 'providerdai@gmail.com', '$2y$10$0dOJQ.NG8ufOt6ymLRnVIuMJxXJ4eLea1ptr8acLSXg5W2aNZtnam', 2),
-(16, 'userdai@gmail.com', '$2y$10$mYZpAurATHmmLIe9KEXYl.LGYPuNfwnHF0ZAGnZstmel0XnDl7L.2', 1);
+(16, 'userdai@gmail.com', '$2y$10$mYZpAurATHmmLIe9KEXYl.LGYPuNfwnHF0ZAGnZstmel0XnDl7L.2', 1),
+(17, 'providerbhai@gmail.com', '$2y$10$QnYbal.pb1fMjYpAixItDeX8XPZSEOQ6.zyWD8p1Wx.gZYYIVTwvS', 2),
+(18, 'userbhai@gmail.com', '$2y$10$Q9ucdGxABVR.2vQnl4tjC.dWKpTpYj.U8hqc4hSFgZ6YisZT1io52', 1);
 
 -- --------------------------------------------------------
 
@@ -335,7 +348,8 @@ INSERT INTO `verification_request` (`vrid`, `service_id`, `provider_id`, `specif
 (3, 1, 6, 'Good', '2026-01-21', 'uploads/Screenshot 2026-01-13 at 19.57.30.png', 3, 1, 1, 'Your verification has been cancelled', 'You have a new cancellation request', '2026-02-12 02:30:02'),
 (4, 2, 6, 'Good', '2026-02-04', 'uploads/2 (1).png', 1, 1, 1, 'Your verification has been cancelled', 'You have a new verification request', '2026-02-12 02:30:03'),
 (5, 4, 7, 'Good', '2026-02-12', 'uploads/Screenshot 2026-02-11 at 10.56.19.png', 1, 0, 1, 'Your verification request has been accepted', 'You have a new verification request', '2026-02-12 03:39:07'),
-(6, 5, 9, 'Good', '2026-02-05', 'uploads/Screenshot 2026-02-12 at 13.12.04.png', 1, 0, 1, 'Your verification request has been accepted', 'You have a new verification request', '2026-02-12 11:20:45');
+(6, 5, 9, 'Good', '2026-02-05', 'uploads/Screenshot 2026-02-12 at 13.12.04.png', 1, 0, 1, 'Your verification request has been accepted', 'You have a new verification request', '2026-02-12 11:20:45'),
+(7, 5, 11, 'Good', '2026-02-15', 'uploads/Screenshot 2026-02-13 at 17.42.58.png', 1, 0, 1, 'Your verification request has been accepted', 'You have a new verification request', '2026-02-15 04:01:03');
 
 --
 -- Indexes for dumped tables
@@ -377,7 +391,8 @@ ALTER TABLE `services`
 -- Indexes for table `service_request`
 --
 ALTER TABLE `service_request`
-  ADD PRIMARY KEY (`srid`);
+  ADD PRIMARY KEY (`srid`),
+  ADD KEY `fk_provider` (`provider_id`);
 
 --
 -- Indexes for table `service_table`
@@ -419,7 +434,7 @@ ALTER TABLE `verification_request`
 -- AUTO_INCREMENT for table `consumer`
 --
 ALTER TABLE `consumer`
-  MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `feedbacks`
@@ -431,13 +446,13 @@ ALTER TABLE `feedbacks`
 -- AUTO_INCREMENT for table `provider`
 --
 ALTER TABLE `provider`
-  MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `ratings`
 --
 ALTER TABLE `ratings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -449,7 +464,7 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `service_request`
 --
 ALTER TABLE `service_request`
-  MODIFY `srid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `srid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `system_settings`
@@ -461,13 +476,23 @@ ALTER TABLE `system_settings`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `verification_request`
 --
 ALTER TABLE `verification_request`
-  MODIFY `vrid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `vrid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `service_request`
+--
+ALTER TABLE `service_request`
+  ADD CONSTRAINT `fk_provider` FOREIGN KEY (`provider_id`) REFERENCES `provider` (`pid`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -157,38 +157,48 @@ if(isset($_POST['save_location'])){
                     <!-- <br> -->
 
                     <!-- Bookings Table with consumer info -->
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>SRID</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Phone No</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Status</th>
-                                <th>Work Status</th>
-                                <th>Payment Status</th>
-                                <th>Marker Color</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($locations as $loc): ?>
-                            <tr>
-                                <td><?php echo $loc['srid']; ?></td>
-                                <td><?php echo $loc['fname']; ?></td>
-                                <td><?php echo $loc['lname']; ?></td>
-                                <td><?php echo $loc['phnno']; ?></td>
-                                <td><?php echo $loc['req_date']; ?></td>
-                                <td><?php echo $loc['req_time']; ?></td>
-                                <td><?php echo $loc['status']; ?></td>
-                                <td><?php echo $loc['work_status']; ?></td>
-                                <td><?php echo $loc['payment_status']; ?></td>
-                                <td><?php echo ucfirst($loc['color']); ?></td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+<?php if (!empty($locations)): ?>
+<table>
+    <thead>
+        <tr>
+            <th>SR ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone</th>
+            <th>Request Date</th>
+            <th>Request Time</th>
+            <th>Status</th>
+            <th>Work Status</th>
+            <th>Payment Status</th>
+            <th>Color</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php 
+        function showValue($value, $default = '-') {
+            return !empty($value) ? $value : $default;
+        }
+
+        foreach ($locations as $loc): ?>
+        <tr>
+            <td><?php echo showValue($loc['srid']); ?></td>
+            <td><?php echo showValue($loc['fname']); ?></td>
+            <td><?php echo showValue($loc['lname']); ?></td>
+            <td><?php echo showValue($loc['phnno']); ?></td>
+            <td><?php echo showValue($loc['req_date']); ?></td>
+            <td><?php echo showValue($loc['req_time']); ?></td>
+            <td><?php echo showValue($loc['status']); ?></td>
+            <td><?php echo showValue($loc['work_status']); ?></td>
+            <td><?php echo showValue($loc['payment_status']); ?></td>
+            <td><?php echo showValue(ucfirst($loc['color'])); ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<?php else: ?>
+<p>No data available.</p>
+<?php endif; ?>
+
 <p id="distanceDisplay"></p>
 
 <br>

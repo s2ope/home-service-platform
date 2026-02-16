@@ -165,24 +165,117 @@ if (isset($_SESSION['error_message'])) {
 }
 
 // ------------------- GENERATE TIME SLOTS -------------------
-$slots = [];
-$booked = [];
-$startHour = 9; // 9 AM
-$endHour = 18; // 6 PM
 
-if ($pid != '' && $sid != '') {
-    for ($h = $startHour; $h < $endHour; $h++) {
-        $slots[] = sprintf('%02d:00', $h); // 09:00, 10:00, etc.
-    }
 
-    if (isset($_POST['req_date'])) {
-        $selected_date = $_POST['req_date'];
-        $result = $con->query("SELECT req_time FROM service_request WHERE provider_id=$pid AND req_date='$selected_date' AND status=1");
-        while ($row = $result->fetch_assoc()) {
-            $booked[] = $row['req_time'];
+// -----------------------------
+// Handle booking when a slot is clicked
+// -----------------------------
+if (isset($_POST['book_slot']) && $consumer_id) {
+
+    $cid = $consumer_id;
+    $pid = intval($_POST['provider_id']);
+    $slot_id = intval($_POST['slot_id']);
+    $req_date = $_POST['req_date'];
+    $req_time = date('H:i:s', strtotime($_POST['slot_time'])); // convert to H:i:s format
+
+    $sid = $service_id ?? 1; // replace with current service ID
+    $payment_status = 0;
+    $work_status = 0;
+    $status = 0;
+    $read_status_c = 0;
+    $read_status = 0;
+    $msgc = '';
+    $msgp = '';
+    $user_lat = 0;
+    $user_lng = 0;
+
+    // Check slot is still available
+    $check_sql = "SELECT status FROM provider_schedule_day WHERE id=$slot_id AND provider_id=$pid";
+    $res = mysqli_query($conn, $check_sql);
+    $row = mysqli_fetch_assoc($res);
+
+    if ($row && $row['status'] == 0) {
+        // Insert booking into service_request
+        $stmt3 = $conn->prepare("INSERT INTO service_request 
+            (consumer_id, provider_id, service_id, req_date, req_time, payment_status, work_status, status, read_status_c, read_status, msgc, msgp, user_lat, user_lng) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt3->bind_param("iiissiiiisssdd", 
+            $cid, $pid, $sid, $req_date, $req_time,
+            $payment_status, $work_status, $status,
+            $read_status_c, $read_status, $msgc, $msgp,
+            $user_lat, $user_lng
+        );
+
+        if ($stmt3->execute()) {
+            // Update slot status to packed (1)
+            mysqli_query($conn, "UPDATE provider_schedule_day SET status=1 WHERE id=$slot_id");
+
+            echo "<p style='color:green;'>Slot booked successfully for $req_date at $req_time!</p>";
+        } else {
+            echo "<p style='color:red;'>Booking failed!</p>";
         }
+    } else {
+        echo "<p style='color:red;'>Slot already booked or unavailable!</p>";
     }
 }
+
+$data = [];
+
+// Fetch schedule for that provider
+$sql = "SELECT * 
+        FROM provider_schedule_day 
+        WHERE provider_id = $pid 
+        ORDER BY day, slots ASC";
+
+$result = mysqli_query($con, $sql);
+
+$data = [];
+
+if ($result && mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data[] = $row;
+    }
+}
+
+
+
+
+
+
+
+$groupedData = [];
+
+if (!empty($data)) {
+
+    $daysOfWeek = [
+        'Sunday','Monday','Tuesday',
+        'Wednesday','Thursday','Friday','Saturday'
+    ];
+
+    // Sort by correct day order
+    usort($data, function($a, $b) use ($daysOfWeek) {
+        return array_search($a['day'], $daysOfWeek)
+             <=> array_search($b['day'], $daysOfWeek);
+    });
+
+    foreach ($data as $item) {
+
+        $day = $item['day'];
+
+        if (!isset($groupedData[$day])) {
+            $groupedData[$day] = [];
+        }
+
+        $groupedData[$day][] = [
+            'id'     => $item['id'],
+            'slot'   => date('g:i A', strtotime($item['slots'])),
+            'status' => $item['status']
+        ];
+    }
+}
+// ------------------- GENERATE TIME SLOTS -------------------
+
+
 ?>
 
 <!DOCTYPE HTML>
@@ -239,21 +332,51 @@ if ($pid != '' && $sid != '') {
                    required />
         </div>
 
-        <!-- Time Slot -->
-        <div class="col-12">
-            <label>Select Time Slot</label>
-            <select name="req_time" required>
-                <option value="">-- Select Time --</option>
-                <?php
-                foreach ($slots as $slot) {
-                    $disabled = in_array($slot, $booked) ? 'disabled' : '';
-                    $display = date('h:i A', strtotime($slot)) . " - " .
-                               date('h:i A', strtotime($slot . ' +1 hour'));
-                    echo "<option value='$slot' $disabled>$display</option>";
-                }
-                ?>
-            </select>
-        </div>
+ <!-- Time Slot -->
+
+
+
+<!-- Time Slot -->
+<div class="col-12">
+<?php if (!empty($groupedData)) { ?>
+    <table border="1" cellpadding="5" cellspacing="0" style="margin-top:10px;">
+        <tr>
+            <th style="border-right:1px solid black;">Day</th>
+            <th>Time Slots</th>
+        </tr>
+        <?php foreach ($groupedData as $day => $slots) { ?>
+            <tr class="slot-row" data-day="<?php echo $day; ?>">
+                <td><?php echo htmlspecialchars($day); ?></td>
+                <td>
+                    <?php foreach ($slots as $slot) {
+                        $color = ($slot['status']==0) ? "green" : (($slot['status']==1) ? "yellow" : "red");
+                    ?>
+                        <?php if ($slot['status']==0) { ?>
+                            <!-- Only status=0 is selectable -->
+                            <label style="margin-right:5px;" class="slot-label">
+                                <input type="radio" name="slot_id" value="<?php echo $slot['id']; ?>" required>
+                                <span class="slot-button" style="background:<?php echo $color; ?>;"><?php echo $slot['slot']; ?></span>
+                            </label>
+                        <?php } else { ?>
+                            <span class="slot-button" style="background:<?php echo $color; ?>; cursor:not-allowed; margin-right:5px;">
+                                <?php echo $slot['slot']; ?>
+                            </span>
+                        <?php } ?>
+                    <?php } ?>
+                </td>
+            </tr>
+        <?php } ?>
+    </table>
+<?php } else { ?>
+    <h3 style="color:red;">No Available Slots</h3>
+<?php } ?>
+</div>
+
+
+
+
+
+
 
         <!-- Service Duration -->
         <div class="col-12">
@@ -280,6 +403,8 @@ if ($pid != '' && $sid != '') {
         <input type="hidden" name="stype" value="<?php echo htmlspecialchars($_GET["sname"] ?? ""); ?>">
         <input type="hidden" name="pid" value="<?php echo htmlspecialchars($pid); ?>">
         <input type="hidden" name="sname" value="<?php echo htmlspecialchars($sname); ?>">
+         <!-- <input type="hidden" name="provider_id" value="<?php echo htmlspecialchars($providerdetailsList->id); ?>"> -->
+        <input type="hidden" name="day" value="<?php echo htmlspecialchars($day); ?>">
 
 
 
@@ -349,6 +474,37 @@ if ($pid != '' && $sid != '') {
 function openMap(){
     window.open("select_location.php", "Select Location", "width=600,height=500");
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const dateInput = document.getElementById('req_date');
+
+    dateInput.addEventListener('change', function() {
+        let selectedDate = this.value;
+        if(!selectedDate) return;
+
+        // Convert selected date to day name
+        const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        let dayIndex = new Date(selectedDate).getDay();
+        let selectedDay = dayNames[dayIndex];
+
+        // Loop through all slot rows and show/hide based on day
+        document.querySelectorAll('.slot-row').forEach(row => {
+            if(row.dataset.day === selectedDay){
+                row.style.display = ''; // show
+                row.querySelectorAll('input[type=radio]').forEach(r => r.disabled = false);
+            } else {
+                row.style.display = 'none'; // hide
+                row.querySelectorAll('input[type=radio]').forEach(r => r.disabled = true);
+            }
+        });
+    });
+
+    // Trigger change once on page load to hide other rows if a date is prefilled
+    if(dateInput.value){
+        dateInput.dispatchEvent(new Event('change'));
+    }
+});
+
 </script>
 
 <script src="assets/js/jquery.min.js"></script>
