@@ -408,7 +408,7 @@ $users = fetchUsers($con, $active_tab);
         <div id="main">
             <div class="inner">
                 <header id="header">
-                    <a href="view_arequest.php" class="logo"><strong>Ghar</strong>Sewa</a>
+                    <a href="view_arequest.php" class="logo"><strong>home</strong>service</a>
                 </header>
                 
                 <header class="main">

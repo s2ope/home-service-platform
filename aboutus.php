@@ -27,7 +27,7 @@ ini_set('display_errors', 1);
 
 							<!-- Header -->
 								<header id="header">
-									<a href="index.php" class="logo"><strong>Ghar Sewa</strong> </a>
+									<a href="index.php" class="logo"><strong>homeservice</strong> </a>
 									
 								</header>
 
@@ -37,10 +37,10 @@ ini_set('display_errors', 1);
 										<h2>About Us</h2>
 									</header>
 									
-									<p align="justify">Ghar Sewa is developed by Student of Patan Multiple Campus: Sandesh kandel & Shoujanya Shakya.</p>
-										<p align="justify">Ghar Sewa provides Online System in which any interested service provider can register and then log in and view their own service bookings. Service consumer can select the required provider in their local city and feed booking form. This system is developed in Php language using javascript, CSS with MySQL database. 
+									<p align="justify">homeservice is developed by Student of Patan Multiple Campus: Sandesh kandel & Shoujanya Shakya.</p>
+										<p align="justify">homeservice provides Online System in which any interested service provider can register and then log in and view their own service bookings. Service consumer can select the required provider in their local city and feed booking form. This system is developed in Php language using javascript, CSS with MySQL database. 
 										</p>
-										<p align="justify">Ghar Sewa is very useful for everyone who wants to offer home services because now a day’s everyone wants to save time and shot out their problems within time without any problem, therefore, online household services are very useful for people. There are only two modules present first is service provider and the second one is a service consumer.
+										<p align="justify">homeservice is very useful for everyone who wants to offer home services because now a day’s everyone wants to save time and shot out their problems within time without any problem, therefore, online household services are very useful for people. There are only two modules present first is service provider and the second one is a service consumer.
 										</p>
 										
 										

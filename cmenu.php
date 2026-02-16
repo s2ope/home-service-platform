@@ -93,7 +93,7 @@ $con->close();
 ?>
 
 <!-- Search -->
-<section id="search" class="alt">
+<section class="alt">
     <center>
         <form method="post" enctype="multipart/form-data" id="profile_pic_form" style="position: relative;">
             <img src='uploads/<?php echo $_SESSION["consumer_img"]; ?>' width="150px" height="150px" style="border-radius: 75px;border:1px solid white;">

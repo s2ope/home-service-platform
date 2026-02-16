@@ -136,7 +136,7 @@ if(isset($_POST['save_location'])){
     <div id="main">
         <div class="inner">
             <header id="header">
-                <a href="provider_map.php" class="logo"><strong>Ghar Sewa</strong></a>
+                <a href="provider_map.php" class="logo"><strong>homeservice</strong></a>
             </header>
 
             <h2 id="elements">View map, <?php echo htmlspecialchars($provider_name); ?></h2>

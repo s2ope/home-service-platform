@@ -465,7 +465,7 @@ $result = $stmt->get_result();
         <div id="main">
             <div class="inner">
                 <header id="header">
-                    <a href="view_arequest.php" class="logo"><strong>Ghar</strong>Sewa </a>
+                    <a href="view_arequest.php" class="logo"><strong>home</strong>service </a>
                 </header>
                 
                 <div class="dashboard-header">

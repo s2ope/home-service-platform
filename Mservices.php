@@ -322,7 +322,7 @@ $verification_result = $stmt->get_result(); // Changed variable name here
         <div id="main">
             <div class="inner">
                 <header id="header">
-                    <a href="view_request.php" class="logo"><strong>Ghar Sewa</strong></a>
+                    <a href="view_request.php" class="logo"><strong>homeservice</strong></a>
                 </header>
             
                     <h2>Verify Services</h2>

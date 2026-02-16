@@ -35,7 +35,7 @@ while($row = mysqli_fetch_assoc($result)) {
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Admin Feedback - Ghar Sewa</title>
+    <title>Admin Feedback - home service</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -192,7 +192,7 @@ while($row = mysqli_fetch_assoc($result)) {
         <div id="main">
             <div class="inner">
                 <header id="header">
-                    <a href="view_arequest.php" class="logo"><strong>Ghar</strong>Sewa</a>
+                    <a href="view_arequest.php" class="logo"><strong>home</strong>service</a>
                 </header>
                 
                     <header class="major">

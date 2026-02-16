@@ -51,7 +51,7 @@ if (isset($_POST['update_bill'])) {
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Update Bill - Ghar Sewa</title>
+    <title>Update Bill - homeservice</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -81,7 +81,7 @@ if (isset($_POST['update_bill'])) {
         <div class="inner">
 
             <header id="header">
-                <a href="Mservices.php" class="logo"><strong>Ghar Sewa</strong></a>
+                <a href="Mservices.php" class="logo"><strong>homeservice</strong></a>
             </header>
 
             <h2>Update Bill</h2>

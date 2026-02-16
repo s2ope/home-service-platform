@@ -207,7 +207,7 @@ unset($_SESSION['form_data']);
                 <div class="inner">
 
                     <header id="header">
-                        <a href="view_arequest.php" class="logo"><strong>Ghar Sewa</strong></a>
+                        <a href="view_arequest.php" class="logo"><strong>home service</strong></a>
                     </header>
 
                     <h2 id="elements">Update Organization Details</h2>

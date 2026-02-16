@@ -153,7 +153,7 @@ if (isset($_POST["sbbtn"])) {
         <div class="inner">
 
             <header id="header">
-                <a href="index.php" class="logo"><strong>Ghar Sewa</strong></a>
+                <a href="index.php" class="logo"><strong>homeservice</strong></a>
             </header>
 
             <h2 id="elements">Sign Up</h2>

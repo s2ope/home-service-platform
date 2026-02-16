@@ -50,7 +50,7 @@ if (isset($_POST["sbbtn"])) {
             <!-- HEADER -->
             <header id="header">
                 <a href="index.php" class="logo">
-                    <strong>Ghar Sewa</strong>
+                    <strong>homeservice</strong>
                 </a>
             </header>
 
