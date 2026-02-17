@@ -25,7 +25,7 @@
 	<li><a href="aboutus.php">About Us</a></li>
 	<li><a href="contactus.php">Contact Us</a></li>
 	<li><a href="Signin.php">SignIn/SignUp</a></li>
-	<li><a href="Verify.php">Password Recovery</a></li>
+	<!-- <li><a href="Verify.php">Password Recovery</a></li> -->
 </ul>
 </nav>
 	<!-- Section -->

@@ -185,7 +185,6 @@ $empty_stars = 5 - $full_stars - ($has_half_star ? 1 : 0);
         <li><a href="view_request.php">Active Requests <?php if($unread_service_count>0) echo '<span class="unread-badge">'.$unread_service_count.'</span>'; ?></a></li>
         <li><a href="provider_map.php">View Map</a></li>
         <li><a href="View_report.php">Request History</a></li>
-        <li><a href="update_bill.php">Update Bill</a></li>
         <li><a href="Provider_Cpass.php">My Account</a></li>
         <li><a href="contactusp.php">Contact Us</a></li>
         <li><a href="Signout.php">Signout</a></li>
