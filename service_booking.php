@@ -176,7 +176,7 @@ if ($pid) {
             <h2 id="elements">Service Booking</h2>
             <hr class="major" />
             <div class="row gtr-200">
-                <div class="col-6 col-12-medium">
+                <div class="col-12 col-12-medium">
 
 <form method="post" action="service_booking.php?pid=<?php echo htmlspecialchars($pid); ?>&sname=<?php echo htmlspecialchars($sname); ?>">
     <div class="row gtr-uniform">

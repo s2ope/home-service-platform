@@ -2,16 +2,33 @@
 <html>
 <head>
     <title>Select Location</title>
+    <link rel="stylesheet" href="assets/css/main.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
-<body>
+<body class="is-preload">
 
-<h2>Select Your Location</h2>
+<div id="wrapper">
+    <div id="main">
+        <div class="inner">
+            <header id="header">
+                <a href="welcome.php" class="logo"><strong>home service</strong></a>
+            </header>
+
+            <br>
+            <h2 id="elements">Service Booking</h2>
+            <hr class="major" />
+            <div class="row gtr-200">
+                <div class="col-12 col-12-medium">
+
+<label>Select Your Location</label>
 <div id="map" style="height:400px;"></div>
 <br>
 <button onclick="saveLocation()">Save Location</button>
-
+</div>
+            </div>
+        </div>
+    </div>
 <script>
 var map = L.map('map').setView([27.7172, 85.3240], 13);
 
